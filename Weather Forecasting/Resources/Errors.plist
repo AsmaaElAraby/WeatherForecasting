@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>422</key>
+	<dict>
+		<key>en</key>
+		<string>validation error</string>
+	</dict>
+    <key>400</key>
+    <dict>
+        <key>en</key>
+        <string>token invalid, user not login, token expired can’t refresh</string>
+    </dict>
+    <key>401</key>
+    <dict>
+        <key>en</key>
+        <string>token expired, you can refresh it</string>
+    </dict>
+    <key>409</key>
+    <dict>
+        <key>en</key>
+        <string>conflict</string>
+    </dict>
+    <key>404</key>
+    <dict>
+        <key>en</key>
+        <string>object not found</string>
+    </dict>
+    <key>403</key>
+    <dict>
+        <key>en</key>
+        <string>forbidden, unauthorized access</string>
+    </dict>
+</dict>
+</plist>

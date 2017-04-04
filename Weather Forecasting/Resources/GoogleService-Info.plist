@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>FIREBASE_ANALYTICS_COLLECTION_ENABLED</key>
+	<string>NO</string>
+	<key>FIREBASE_ANALYTICS_COLLECTION_DEACTIVATED</key>
+	<string>YES</string>
+	<key>AD_UNIT_ID_FOR_BANNER_TEST</key>
+	<string>ca-app-pub-3940256099942544/2934735716</string>
+	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
+	<string>ca-app-pub-3940256099942544/4411468910</string>
+	<key>CLIENT_ID</key>
+	<string>19331833102-f2iqi4sk80kdlvehdr0i7f0ieqlht789.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.19331833102-f2iqi4sk80kdlvehdr0i7f0ieqlht789</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCwg0hws9YusiaxiuPvv8oXtPqJ1mX1oeI</string>
+	<key>GCM_SENDER_ID</key>
+	<string>19331833102</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.strv.Weather-Forecasting</string>
+	<key>PROJECT_ID</key>
+	<string>weather-forecasting-4d782</string>
+	<key>STORAGE_BUCKET</key>
+	<string>weather-forecasting-4d782.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<true/>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false/>
+	<key>IS_APPINVITE_ENABLED</key>
+	<false/>
+	<key>IS_GCM_ENABLED</key>
+	<true/>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true/>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:19331833102:ios:ad66906c0ce064c7</string>
+	<key>DATABASE_URL</key>
+	<string>https://weather-forecasting-4d782.firebaseio.com</string>
+</dict>
+</plist>
