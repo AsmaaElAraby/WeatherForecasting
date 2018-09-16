@@ -100,7 +100,7 @@ extension ForecastViewController: WeatherForecastDelegate {
         forecastTableView.isHidden = false
         self.noDataFoundLabel?.isHidden = true
         
-        self.screenTitleLabel.text = data.cityData.name 
+        self.screenTitleLabel.text = data.cityData?.name
         
         self.formattedForcastDataForEach3h = WeatherForecastController.formDateIntoListOfSubDaysLists(data: data.listOfDays!)
         

@@ -10,12 +10,11 @@ import Foundation
 
 struct SunDetailsDataModel: Codable {
     
-    let type:       Int
-    let id:         Int
-    let message:    Double
-    let country:    String
+    let type:       Int?
+    let id:         Int?
+    let message:    Double?
+    let country:    String?
     let sunrise:    Double
     let sunset:     Double
     
 }
-

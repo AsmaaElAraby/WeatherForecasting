@@ -10,8 +10,8 @@ import Foundation
 
 struct LocationCoordinatesDataModel: Codable {
     
-    let latitude:   Double
-    let longitude:  Double
+    let latitude:   Double?
+    let longitude:  Double?
     
     enum CodingKeys: String, CodingKey {
         

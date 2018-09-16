@@ -24,13 +24,13 @@ PODS:
   - SwiftyJSON (4.0.0)
 
 DEPENDENCIES:
-  - Alamofire
-  - Firebase/Database
-  - JGProgressHUD
-  - RevealingSplashView
-  - SwiftLocation
-  - SwiftMessages
-  - SwiftyJSON
+  - Alamofire (~> 4.7.3)
+  - Firebase/Database (~> 5.7.0)
+  - JGProgressHUD (~> 2.0.3)
+  - RevealingSplashView (~> 0.5.0)
+  - SwiftLocation (~> 3.2.3)
+  - SwiftMessages (~> 5.0.0)
+  - SwiftyJSON (~> 4.0.0)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -59,6 +59,6 @@ SPEC CHECKSUMS:
   SwiftMessages: 342d312bf8d5ac11141285c8fec6308380df7f72
   SwiftyJSON: 070dabdcb1beb81b247c65ffa3a79dbbfb3b48aa
 
-PODFILE CHECKSUM: 2c3f5c071ebdc00ae6fe4b109d56ca7942303180
+PODFILE CHECKSUM: 05596f1f68031becf5a8d787c22049d0a59f1799
 
-COCOAPODS: 1.5.3
+COCOAPODS: 1.5.2

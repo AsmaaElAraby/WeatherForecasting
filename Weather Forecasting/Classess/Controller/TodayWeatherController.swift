@@ -52,8 +52,10 @@ class TodayWeatherController: BaseController {
         // load the user location first
         LocationManager.shared.currentLocation(onSuccess: { (latitude: Double, longitude: Double) in
             
+            currentLocation = (lat: latitude, lon: longitude)
+            
             // init a request with the user current location and the required number of days
-            let request = WeatherForecastRequest(latitude: 37.785834, longitude: -122.406419)
+            let request = WeatherForecastRequest(latitude: latitude, longitude: longitude)
             
             // connect to the server to load the reqired weather data
             let model = TodayModel()

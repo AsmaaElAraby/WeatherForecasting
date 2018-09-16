@@ -15,7 +15,7 @@ struct WeatherForADayDataModel: Codable {
     let weather:        [WeatherStateDataModel]
     let clouds:         CloudsDetailsDataModel
     let wind:           WindDetailsDataModel
-    let rain:           RainDetails
+    let rain:           RainDetails?
     let sysDetails:     SysDetails
     let dateAsText:     String
     

@@ -10,11 +10,11 @@ import Foundation
 
 struct CurrentLocationDataModel: Codable {
     
-    let id:             Int
-    let name:           String
-    let coordinates:    LocationCoordinatesDataModel
-    let country:        String
-    let population:     Int
+    let id:             Int?
+    let name:           String?
+    let coordinates:    LocationCoordinatesDataModel?
+    let country:        String?
+    let population:     Int?
     
     
     enum CodingKeys: String, CodingKey {

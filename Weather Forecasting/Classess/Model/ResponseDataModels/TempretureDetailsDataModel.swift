@@ -11,7 +11,7 @@ import Foundation
 struct TempretureDetailsDataModel: Codable {
     
     let temperature:    Double
-    let pressure:       Int
+    let pressure:       Double
     let humidity:       Double
     let temperatureMinimum:    Double
     let temperatureMaximum:    Double

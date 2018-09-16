@@ -48,4 +48,8 @@ struct ApplicationColors {
     static let SelectedTabbarItemColor = UIColor(red:0.19, green:0.51, blue:0.98, alpha:1.0)
 }
 
-var currentCityName: String?
+//struct Constants {
+
+    var currentCityName: String?
+    var currentLocation: (lat: Double, lon: Double)?
+//}

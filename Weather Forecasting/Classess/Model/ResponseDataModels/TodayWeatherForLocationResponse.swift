@@ -15,7 +15,7 @@ struct TodayWeatherForLocationResponse: Codable {
     let weather:            [WeatherStateDataModel]
     let base:               String
     let tempretureDetails:  TempretureDetailsDataModel
-    let visibility:         Int
+    let visibility:         Int?
     let wind:               WindDetailsDataModel
     let clouds:             CloudsDetailsDataModel
     let dateTimeStamp:      Int

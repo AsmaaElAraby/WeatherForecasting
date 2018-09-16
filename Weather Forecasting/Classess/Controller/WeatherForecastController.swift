@@ -54,6 +54,7 @@ class WeatherForecastController: BaseController {
         // load the user location first
         LocationManager.shared.currentLocation(onSuccess: { (latitude: Double, longitude: Double) in
             
+            currentLocation = (lat: latitude, lon: longitude)
             
             // init a request with the user current location and the required number of days
             let request = WeatherForecastRequest(latitude: latitude, longitude: longitude)

@@ -11,7 +11,7 @@ target 'Weather Forecasting' do
   pod 'SwiftyJSON', '~> 4.0.0'
   pod 'SwiftMessages', '~> 5.0.0'
   pod 'JGProgressHUD', '~> 2.0.3'
-  pod 'Firebase/Database', '~> 5.0.2'
+  pod 'Firebase/Database', '~> 5.7.0'
   pod 'RevealingSplashView', '~> 0.5.0'
   
   # Pods for Weather Forecasting

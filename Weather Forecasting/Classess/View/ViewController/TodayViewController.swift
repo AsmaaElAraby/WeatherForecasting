@@ -71,7 +71,7 @@ class TodayViewController: BaseViewController {
     /// update the screen ui text with the received data from the server
     fileprivate func updateScreenData() {
         
-        self.currentLocationLabel.text = "\(todayWeatherData.name), \(CountryCodeMapper.countryNameBy(code: todayWeatherData.sunDetails.country))"
+        self.currentLocationLabel.text = "\(todayWeatherData.name.count > 0 ? todayWeatherData.name : currentCityName ?? ""), \(CountryCodeMapper.countryNameBy(code: todayWeatherData.sunDetails.country ?? ""))"
         
         if let weatherState = todayWeatherData.weather.first {
             
@@ -96,7 +96,7 @@ extension TodayViewController: TodayWeatherDelegate {
     
     func didLoadData<T>(data: T) where T : Decodable, T : Encodable {
         
-        guard let data = data as? TodayWeatherForLocationResponse, data.id > 0 else {
+        guard let data = data as? TodayWeatherForLocationResponse else {
             
             self.noDataFoundLabel?.isHidden = false
             self.mainScrollView.isHidden = true

@@ -10,10 +10,10 @@ import Foundation
 
 struct WeatherForecastForLocationResponse: Codable {
     
-    let cityData:           CurrentLocationDataModel
-    let code:               String
-    let message:            Double
-    let numberOfDays:       Int
+    let cityData:           CurrentLocationDataModel?
+    let code:               String?
+    let message:            Double?
+    let numberOfDays:       Int?
     let listOfDays:         [WeatherForADayDataModel]?
     
     
