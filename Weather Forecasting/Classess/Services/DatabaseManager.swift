@@ -13,13 +13,13 @@ class DatabaseManager {
 
     private let DatabasePath    = "WeatherForecasting"
     static  var shared          = DatabaseManager()
-    private var database        = FIRDatabase.database()
-    private var databaseReference: FIRDatabaseReference?
+    private var database        = Database.database()
+    private var databaseReference: DatabaseReference?
 
     private func initFirebase() {
 
         if databaseReference == nil {
-            database.persistenceEnabled = true
+            database.isPersistenceEnabled = true
             databaseReference = database.reference(withPath: DatabasePath)
         }
     }

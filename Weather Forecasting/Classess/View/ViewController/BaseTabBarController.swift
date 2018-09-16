@@ -50,9 +50,9 @@ class BaseTabBarController: UITabBarController {
         
         
         // update the tab bar text color
-        UITabBarItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName: ApplicationColors.UnselectedTabbarItemColor], for:.normal)
+        UITabBarItem.appearance().setTitleTextAttributes([kCTForegroundColorAttributeName as NSAttributedStringKey: ApplicationColors.UnselectedTabbarItemColor], for:.normal)
         
-        UITabBarItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName: ApplicationColors.SelectedTabbarItemColor], for:.selected)
+        UITabBarItem.appearance().setTitleTextAttributes([kCTForegroundColorAttributeName as NSAttributedStringKey: ApplicationColors.SelectedTabbarItemColor], for:.selected)
 
     }
     
