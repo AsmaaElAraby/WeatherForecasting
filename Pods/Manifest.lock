@@ -1,28 +1,27 @@
 PODS:
-  - Alamofire (4.4.0)
-  - Firebase/Core (3.15.0):
-    - FirebaseAnalytics (= 3.7.0)
-    - FirebaseCore (= 3.5.2)
-  - Firebase/Database (3.15.0):
-    - Firebase/Core
-    - FirebaseDatabase (= 3.1.2)
-  - FirebaseAnalytics (3.7.0):
-    - FirebaseCore (~> 3.5)
-    - FirebaseInstanceID (~> 1.0)
-    - "GoogleToolboxForMac/NSData+zlib (~> 2.1)"
-  - FirebaseCore (3.5.2):
-    - "GoogleToolboxForMac/NSData+zlib (~> 2.1)"
-  - FirebaseDatabase (3.1.2):
-    - FirebaseAnalytics (~> 3.7)
-  - FirebaseInstanceID (1.0.9)
-  - GoogleToolboxForMac/Defines (2.1.1)
-  - "GoogleToolboxForMac/NSData+zlib (2.1.1)":
-    - GoogleToolboxForMac/Defines (= 2.1.1)
-  - JGProgressHUD (1.4)
-  - RevealingSplashView (0.1.0)
-  - SwiftLocation (2.0.1)
-  - SwiftMessages (3.3.1)
-  - SwiftyJSON (3.1.4)
+  - Alamofire (4.7.3)
+  - Firebase/CoreOnly (5.7.0):
+    - FirebaseCore (= 5.1.2)
+  - Firebase/Database (5.7.0):
+    - Firebase/CoreOnly
+    - FirebaseDatabase (= 5.0.2)
+  - FirebaseCore (5.1.2):
+    - GoogleUtilities/Logger (~> 5.2)
+  - FirebaseDatabase (5.0.2):
+    - FirebaseCore (~> 5.0)
+    - leveldb-library (~> 1.18)
+  - GoogleUtilities/Environment (5.2.2)
+  - GoogleUtilities/Logger (5.2.2):
+    - GoogleUtilities/Environment
+  - JGProgressHUD (2.0.3)
+  - leveldb-library (1.20)
+  - RevealingSplashView (0.5.0)
+  - SwiftLocation (3.2.3):
+    - SwiftyJSON (~> 4.0.0-alpha.1)
+  - SwiftMessages (5.0.0):
+    - SwiftMessages/App (= 5.0.0)
+  - SwiftMessages/App (5.0.0)
+  - SwiftyJSON (4.0.0)
 
 DEPENDENCIES:
   - Alamofire
@@ -37,30 +36,28 @@ SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - Alamofire
     - Firebase
-    - FirebaseAnalytics
     - FirebaseCore
     - FirebaseDatabase
-    - FirebaseInstanceID
-    - GoogleToolboxForMac
+    - GoogleUtilities
     - JGProgressHUD
+    - leveldb-library
     - RevealingSplashView
     - SwiftLocation
     - SwiftMessages
     - SwiftyJSON
 
 SPEC CHECKSUMS:
-  Alamofire: dc44b1600b800eb63da6a19039a0083d62a6a62d
-  Firebase: 2b1cdfba1cda8589f32904a697cc753322bff9d8
-  FirebaseAnalytics: 0d1b7d81d5021155be37702a94ba1ec16d45365d
-  FirebaseCore: a024587e43778508700af8c6b1209f7c4516ba02
-  FirebaseDatabase: 05c96d7b43a7368dc91c07791adb49683e1738d1
-  FirebaseInstanceID: 2d0518b1378fe9d685ef40cbdd63d2fdc1125339
-  GoogleToolboxForMac: 8e329f1b599f2512c6b10676d45736bcc2cbbeb0
-  JGProgressHUD: 1617b0940cf80bb53e8f7d6f0fd69252ea45d6d4
-  RevealingSplashView: 501dd03d975ba2c4165dd463ea1c7c407fb9d13e
-  SwiftLocation: 3c66807be3cc511d6b3496fcccd7ba05d839f23b
-  SwiftMessages: 31e27e35c2f11b116ad7ec3232b56ca9bd242475
-  SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
+  Alamofire: c7287b6e5d7da964a70935e5db17046b7fde6568
+  Firebase: 734a4f92957aa6c40e7ae3fda3d9359e1890aa87
+  FirebaseCore: 3a97432acb324b439fbed338e642f9cbb516a63d
+  FirebaseDatabase: 27be5ac5bc75e0b17537b2bbfada8258addcc8cd
+  GoogleUtilities: 06b66f9567769a7958db20a92f0128b2843e49d5
+  JGProgressHUD: 12b20a8f4ffe05258f8635c1ab92816e451f904d
+  leveldb-library: 08cba283675b7ed2d99629a4bc5fd052cd2bb6a5
+  RevealingSplashView: 0794eecad3a8983ac11a1fe474e9a9b51b926780
+  SwiftLocation: a3c3bc2023118171ef3572188a31def94aa0892c
+  SwiftMessages: 342d312bf8d5ac11141285c8fec6308380df7f72
+  SwiftyJSON: 070dabdcb1beb81b247c65ffa3a79dbbfb3b48aa
 
 PODFILE CHECKSUM: 2c3f5c071ebdc00ae6fe4b109d56ca7942303180
 

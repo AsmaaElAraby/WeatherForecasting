@@ -52,7 +52,7 @@ class TodayWeatherController: BaseController {
         
         
         // load the user location first
-        LocationManager.shared.getCurrentLocation(onSuccess: { (latitude: Double, longitude: Double) in
+        LocationManager.shared.currentLocation(onSuccess: { (latitude: Double, longitude: Double) in
             
             
             // init a request with the user current location and the required number of days

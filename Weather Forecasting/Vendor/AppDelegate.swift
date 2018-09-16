@@ -19,8 +19,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         
         // configure Firebase
-        FIRApp.configure()
-        FIRAnalyticsConfiguration.sharedInstance().setAnalyticsCollectionEnabled(false)
+        FirebaseApp.configure()
+        AnalyticsConfiguration.shared().setAnalyticsCollectionEnabled(false)
         
         return true
     }

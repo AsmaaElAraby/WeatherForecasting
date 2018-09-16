@@ -2,16 +2,15 @@
 //  LocationManager.swift
 //  Weather Forecasting
 //
-//  Created by mac on 4/2/17.
-//  Copyright © 2017 STRV. All rights reserved.
+//  Copyright © 2018 STRV. All rights reserved.
 //
 
-import UIKit
+import Foundation
 import CoreLocation
 import SwiftLocation
 
-class LocationManager: NSObject {
-
+class LocationManager {
+    
     static let shared = LocationManager()
     
     
@@ -20,9 +19,9 @@ class LocationManager: NSObject {
     /// - Parameters:
     ///   - onSuccess:  Block
     ///   - onFaliure:  Block
-    internal func getCurrentLocation(onSuccess : @escaping (_ latitude: Double, _ longitude: Double) -> Void, onFaliure : @escaping (_ error : String) -> Void) {
+    internal func currentLocation(onSuccess : @escaping (_ latitude: Double, _ longitude: Double) -> Void, onFaliure : @escaping (_ error : String) -> Void) {
         
-        self.getUserCurrentLocationWithAccuracy(accuracy: Accuracy.city, onSuccess: { (_ latitude: Double, _ longitude: Double) in
+        currentLocationWith(accuracy: Accuracy.city, onSuccess: { (_ latitude: Double, _ longitude: Double) in
             
             onSuccess(latitude, longitude)
         }) { (error: String) in
@@ -33,31 +32,41 @@ class LocationManager: NSObject {
     
     
     
-    /// call an API that gets the user current location using GSP and in case it fails call it recursivly to load it using the internet
+    /// call an API that gets the user current location using GSP and in case it fails try to load it throw the internet
     ///
     /// - Parameters:
     ///   - accuracy:   Accuracy
     ///   - onSuccess:  Block
     ///   - onFaliure:  Block
-    private func getUserCurrentLocationWithAccuracy(accuracy: Accuracy, onSuccess : @escaping (_ latitude: Double, _ longitude: Double) -> Void, onFaliure : @escaping (_ error : String) -> Void) {
+    private func currentLocationWith(accuracy: Accuracy, onSuccess : @escaping (_ latitude: Double, _ longitude: Double) -> Void, onFaliure : @escaping (_ error : String) -> Void) {
         
         // get the user current location with the accuracy of city static on this level of the app
-        Location.getLocation(accuracy: accuracy, frequency: Frequency.oneShot, success: { (request: LocationRequest, location: CLLocation) -> (Void) in
+        Locator.currentPosition(accuracy: .city, onSuccess: { (location) -> (Void) in
             
             // if the received location is empty call the same method but loading it over the internet not from the GPS (it's a hack to load the user location)
-             if location.coordinate.latitude != 0 && location.coordinate.longitude != 0 {
-                
-                onSuccess(location.coordinate.latitude, location.coordinate.longitude)
-            } else {
-                
-                self.getUserCurrentLocationWithAccuracy(accuracy: Accuracy.IPScan(IPService.init(.smartIP)), onSuccess: onSuccess, onFaliure: onFaliure)
-            }
+            (location.coordinate.latitude != 0 && location.coordinate.longitude != 0) ? onSuccess(location.coordinate.latitude, location.coordinate.longitude) : self.currentLocationWithIpAddress(onSuccess: onSuccess, onFaliure: onFaliure)
             
-        }) { (request: LocationRequest, location: CLLocation?, error: Error) -> (Void) in
+        }) { (err, last) -> (Void) in
+            
             // if couldn't get the user current location try to load it without GPS
-        
-            self.getUserCurrentLocationWithAccuracy(accuracy: Accuracy.IPScan(IPService.init(.smartIP)), onSuccess: onSuccess, onFaliure: onFaliure)
+            self.currentLocationWithIpAddress(onSuccess: onSuccess, onFaliure: onFaliure)
         }
     }
-
+    
+    
+    
+    /// loading user location throw ip address via free service
+    ///
+    /// - Parameters:
+    ///   - onSuccess: Block
+    ///   - onFaliure: Block
+    private func currentLocationWithIpAddress(onSuccess : @escaping (_ latitude: Double, _ longitude: Double) -> Void, onFaliure : @escaping (_ error : String) -> Void) {
+        
+        Locator.currentPosition(usingIP: .freeGeoIP, onSuccess: { location in
+            (location.coordinate.latitude != 0 && location.coordinate.longitude != 0) ? onSuccess(location.coordinate.latitude, location.coordinate.longitude) : onFaliure("locationLoadingError")
+        }) { error, _ in
+            onFaliure(error.localizedDescription)
+        }
+    }
+    
 }

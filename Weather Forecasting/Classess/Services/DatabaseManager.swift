@@ -13,13 +13,13 @@ class DatabaseManager {
 
     
     static  var shared      = DatabaseManager()
-    private var database    = FIRDatabase.database()
-    private var databaseReference: FIRDatabaseReference?
+    private var database    = Database.database()
+    private var databaseReference: DatabaseReference?
 
     private func initFirebase() {
 
         if databaseReference == nil {
-            self.database.persistenceEnabled = true
+            self.database.isPersistenceEnabled = true
             self.databaseReference = database.reference()
         }
     }

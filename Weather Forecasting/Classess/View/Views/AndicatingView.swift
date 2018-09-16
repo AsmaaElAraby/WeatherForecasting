@@ -41,7 +41,7 @@ class AndicatingView: NSObject {
     ///   - messageError:   Bool (Is it an error message or not?)
     func displayMessage(message: String, title: String, messageError: Bool) {
         
-        let view = MessageView.viewFromNib(layout: MessageView.Layout.MessageViewIOS8)
+        let view = MessageView.viewFromNib(layout: MessageView.Layout.centeredView)
         
         if messageError == true {
             view.configureTheme(.error)
