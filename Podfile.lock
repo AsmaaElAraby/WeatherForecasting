@@ -9,14 +9,14 @@ PODS:
   - FirebaseAnalytics (3.7.0):
     - FirebaseCore (~> 3.5)
     - FirebaseInstanceID (~> 1.0)
-    - GoogleToolboxForMac/NSData+zlib (~> 2.1)
+    - "GoogleToolboxForMac/NSData+zlib (~> 2.1)"
   - FirebaseCore (3.5.2):
-    - GoogleToolboxForMac/NSData+zlib (~> 2.1)
+    - "GoogleToolboxForMac/NSData+zlib (~> 2.1)"
   - FirebaseDatabase (3.1.2):
     - FirebaseAnalytics (~> 3.7)
   - FirebaseInstanceID (1.0.9)
   - GoogleToolboxForMac/Defines (2.1.1)
-  - GoogleToolboxForMac/NSData+zlib (2.1.1):
+  - "GoogleToolboxForMac/NSData+zlib (2.1.1)":
     - GoogleToolboxForMac/Defines (= 2.1.1)
   - JGProgressHUD (1.4)
   - RevealingSplashView (0.1.0)
@@ -32,6 +32,21 @@ DEPENDENCIES:
   - SwiftLocation
   - SwiftMessages
   - SwiftyJSON
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - Alamofire
+    - Firebase
+    - FirebaseAnalytics
+    - FirebaseCore
+    - FirebaseDatabase
+    - FirebaseInstanceID
+    - GoogleToolboxForMac
+    - JGProgressHUD
+    - RevealingSplashView
+    - SwiftLocation
+    - SwiftMessages
+    - SwiftyJSON
 
 SPEC CHECKSUMS:
   Alamofire: dc44b1600b800eb63da6a19039a0083d62a6a62d
@@ -49,4 +64,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 2c3f5c071ebdc00ae6fe4b109d56ca7942303180
 
-COCOAPODS: 1.1.1
+COCOAPODS: 1.5.3
