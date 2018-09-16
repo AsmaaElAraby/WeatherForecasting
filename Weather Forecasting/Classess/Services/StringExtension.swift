@@ -6,7 +6,7 @@
 //  Copyright © 2017 STRV. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
 extension String {
     

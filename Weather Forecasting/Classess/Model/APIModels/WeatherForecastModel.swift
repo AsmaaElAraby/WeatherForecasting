@@ -20,16 +20,14 @@ class WeatherForecastModel: BaseModel {
     ///   - onFaliure:  Block
     internal func getWeatherDataForLocationRequest(request: WeatherForecastRequest, onSuccess : @escaping (_ response : WeatherForecastForLocationResponse) -> Void, onFaliure : @escaping (_ error : String) -> Void) {
         
-        APIManager.shared.requestDataWithGetMethod(url: AppURLs.DailyForecast.appending(request.asString()).appending(""),  onSuccess: { (response: String?) in
+        APIManager.shared.requestDataWithGetMethod(url: AppURLs.DailyForecast.appending(request.description).appending(""),  onSuccess: { (response: String?) in
             
             if response != nil {
                 
                 DatabaseManager.shared.setUpdateTableData(elementTable: DatabaseTable.Forcast, elementValue: response!)
 
-                let dataParsed = JSON(parseJSON: response!)
-                if let dataParsed = dataParsed.dictionary {
-                    
-                    let finalResponse = WeatherForecastForLocationResponse(data: dataParsed)
+                if let finalResponse = WeatherForecastForLocationResponse.decode(json: response!, asA: WeatherForecastForLocationResponse.self) {
+
                     onSuccess(finalResponse)
                     
                 } else {
@@ -59,10 +57,8 @@ class WeatherForecastModel: BaseModel {
         
         DatabaseManager.shared.getTableData(elementTable: DatabaseTable.Forcast, onSuccess: { (presavedData: String) in
             
-            let dataParsed = JSON(parseJSON: presavedData)
-            if let dataParsed = dataParsed.dictionary {
-                
-                let finalResponse = WeatherForecastForLocationResponse(data: dataParsed)
+            if let finalResponse = WeatherForecastForLocationResponse.decode(json: presavedData, asA: WeatherForecastForLocationResponse.self) {
+
                 onSuccess(finalResponse)
                 
             } else {

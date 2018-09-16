@@ -6,52 +6,19 @@
 //  Copyright © 2017 STRV. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
-enum WeatherForecastRequestParameters :String {
-    case    Latitude        =   "lat"
-    case    Longitude       =   "lon"
-    case    NumberOfDays    =   "cnt"
-    case    AppId           =   "appid"
-}
+struct WeatherForecastRequest: Codable {
 
-class WeatherForecastRequest: BasRequest {
+    let latitude:       Double
+    let longitude:      Double
+    let numberOfDays:   String?
+    let appId:          String = WeatherMapKey.AppId.rawValue
 
-    private var latitude:       Double!
-    private var longitude:      Double!
-    private var NumberOfDays:   String!
-
-    
-    /// init the request with the user current location and number of days should be loaded
-    ///
-    /// - Parameters:
-    ///   - latitude:       Double
-    ///   - longitude:      Double
-    ///   - NumberOfDays:   String
-    init(latitude: Double, longitude: Double, NumberOfDays: String = "") {
-        
-        self.latitude       = latitude
-        self.longitude      = longitude
-        self.NumberOfDays   = NumberOfDays
+    enum CodingKeys: String, CodingKey {
+        case latitude       = "lat"
+        case longitude      = "lon"
+        case numberOfDays   = "cnt"
+        case appId          = "appid"
     }
-
-    
-    /// get the current object data as a dictionary
-    ///
-    /// - Returns:  [String : Any]
-    internal override func asJSONDictionary() -> [String : Any] {
-        
-        if self.NumberOfDays != nil && self.NumberOfDays != "" {
-            
-            return [WeatherForecastRequestParameters.Latitude.rawValue      :   self.latitude,
-                    WeatherForecastRequestParameters.Longitude.rawValue     :   self.longitude,
-                    WeatherForecastRequestParameters.NumberOfDays.rawValue  :   self.NumberOfDays,
-                    WeatherForecastRequestParameters.AppId.rawValue         :   WeatherMapKey.AppId.rawValue]
-        }
-        
-        return [WeatherForecastRequestParameters.Latitude.rawValue      :   self.latitude,
-                WeatherForecastRequestParameters.Longitude.rawValue     :   self.longitude,
-                WeatherForecastRequestParameters.AppId.rawValue         :   WeatherMapKey.AppId.rawValue]
-    }
-    
 }

@@ -54,15 +54,12 @@ class TodayWeatherController: BaseController {
         // load the user location first
         LocationManager.shared.currentLocation(onSuccess: { (latitude: Double, longitude: Double) in
             
-            
             // init a request with the user current location and the required number of days
-            let request = WeatherForecastRequest(latitude: latitude, longitude: longitude)
-            
+            let request = WeatherForecastRequest(latitude: latitude, longitude: longitude, numberOfDays: nil)
             
             // connect to the server to load the reqired weather data
             let model = TodayModel()
             model.getTodayWeatherDataForLocationRequest(request: request, onSuccess: { (response: TodayWeatherForLocationResponse) in
-                
                 
                 // send the received data to the delegate if it has one
                 view.stopAnimating()
@@ -74,7 +71,6 @@ class TodayWeatherController: BaseController {
                     
                     self.delegate.didLoadTodayWeatherData(data: response)
                 }
-                
                 
             }) { (error: String) in
                 

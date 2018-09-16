@@ -6,7 +6,7 @@
 //  Copyright © 2017 STRV. All rights reserved.
 //
 
-import UIKit
+import Foundation
 import SwiftyJSON
 
 class TodayModel: BaseModel {
@@ -20,16 +20,14 @@ class TodayModel: BaseModel {
     ///   - onFaliure:  Block
     internal func getTodayWeatherDataForLocationRequest(request: WeatherForecastRequest, onSuccess : @escaping (_ response : TodayWeatherForLocationResponse) -> Void, onFaliure : @escaping (_ error : String) -> Void) {
         
-        APIManager.shared.requestDataWithGetMethod(url: AppURLs.TodayForecast.appending(request.asString()).appending(""),  onSuccess: { (response: String?) in
+        APIManager.shared.requestDataWithGetMethod(url: AppURLs.TodayForecast.appending(request.description).appending(""),  onSuccess: { (response: String?) in
             
             if response != nil {
                 
                 DatabaseManager.shared.setUpdateTableData(elementTable: DatabaseTable.Today, elementValue: response!)
                 
-                let dataParsed = JSON(parseJSON: response!)
-                if let dataParsed = dataParsed.dictionary {
+                if let finalResponse = TodayWeatherForLocationResponse.decode(json: response!, asA: TodayWeatherForLocationResponse.self) {
                     
-                    let finalResponse = TodayWeatherForLocationResponse(data: dataParsed)
                     onSuccess(finalResponse)
                     
                 } else {
@@ -57,10 +55,8 @@ class TodayModel: BaseModel {
         
         DatabaseManager.shared.getTableData(elementTable: DatabaseTable.Today, onSuccess: { (presavedData: String) in
             
-            let dataParsed = JSON(parseJSON: presavedData)
-            if let dataParsed = dataParsed.dictionary {
-                
-                let finalResponse = TodayWeatherForLocationResponse(data: dataParsed)
+            if let finalResponse = TodayWeatherForLocationResponse.decode(json: presavedData, asA: TodayWeatherForLocationResponse.self) {
+
                 onSuccess(finalResponse)
                 
             } else {

@@ -55,7 +55,7 @@ class WeatherForecastController: BaseController {
             
             
             // init a request with the user current location and the required number of days
-            let request = WeatherForecastRequest(latitude: latitude, longitude: longitude, NumberOfDays: "7")
+            let request = WeatherForecastRequest(latitude: latitude, longitude: longitude, numberOfDays: "7")
             
             
             // connect to the server to load the reqired weather data

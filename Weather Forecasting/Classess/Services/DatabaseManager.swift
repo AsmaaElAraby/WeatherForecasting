@@ -11,23 +11,22 @@ import Firebase
 
 class DatabaseManager {
 
-    
-    static  var shared      = DatabaseManager()
-    private var database    = Database.database()
-    private var databaseReference: DatabaseReference?
+    private let DatabasePath    = "WeatherForecasting"
+    static  var shared          = DatabaseManager()
+    private var database        = FIRDatabase.database()
+    private var databaseReference: FIRDatabaseReference?
 
     private func initFirebase() {
 
         if databaseReference == nil {
-            self.database.isPersistenceEnabled = true
-            self.databaseReference = database.reference()
+            database.persistenceEnabled = true
+            databaseReference = database.reference(withPath: DatabasePath)
         }
     }
     
     internal func setUpdateTableData(elementTable: DatabaseTable, elementValue: String) {
         
         self.initFirebase()
-        
         self.databaseReference?.child(elementTable.rawValue).setValue(elementValue)
     }
 

@@ -48,13 +48,13 @@ class WeatherSummaryTableViewCell: UITableViewCell {
         
         DispatchQueue.main.async {
 
-            self.weatherDegreeLabel.text = "\(MesurementsConversionManager.kelvinToCelsius(kelvinTemp: self.cellData.getTemperature().getAppropriateTempreture()))°"
-            self.dayLabel.text = self.cellData.getDateDay()
+            self.weatherDegreeLabel.text = "\(MesurementsConversionManager.kelvinToCelsius(kelvinTemp: self.cellData.temperature.appropriateTempreture))°"
+            self.dayLabel.text = self.cellData.dateDay
             
-            if let weatherState = self.cellData.getWeather().first {
+            if let weatherState = self.cellData.weather.first {
             
-                self.weatherStateLabel.text = weatherState.getElementMain()
-                self.weatherStateImageView.image = UIImage(named: WeatherStateMapper.getWeatherStateImageTitle(state: weatherState.getElementMain()))
+                self.weatherStateLabel.text = weatherState.main
+                self.weatherStateImageView.image = UIImage(named: WeatherStateMapper.getWeatherStateImageTitle(state: weatherState.main ?? ""))
                 
             }
         }

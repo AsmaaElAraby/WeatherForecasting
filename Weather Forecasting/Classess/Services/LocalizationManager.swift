@@ -9,7 +9,7 @@
 
 import UIKit
 
-class LocalizationManager: NSObject {
+class LocalizationManager {
     
     var StringsData: NSDictionary? = nil
     

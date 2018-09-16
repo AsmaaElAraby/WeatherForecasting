@@ -6,42 +6,17 @@
 //  Copyright © 2017 STRV. All rights reserved.
 //
 
-import UIKit
-import SwiftyJSON
+import Foundation
 
-enum LocationCoordinatesResponseParameters: String  {
-    case    Latitude    =   "lat"
-    case    Longitude   =   "lon"
-}
-
-class LocationCoordinatesDataModel: NSObject {
+struct LocationCoordinatesDataModel: Codable {
     
-    private var latitude:   Double!
-    private var longitude:  Double!
+    let latitude:   Double
+    let longitude:  Double
     
-    
-    /// create instance from TemperatureDataModel with the dictionary received from server
-    ///
-    /// - Parameter data: [String : Any]
-    init(data: [String : JSON]) {
+    enum CodingKeys: String, CodingKey {
         
-        if let latitude = data[LocationCoordinatesResponseParameters.Latitude.rawValue] {
-            self.latitude = latitude.double
-        }
-        
-        if let longitude = data[LocationCoordinatesResponseParameters.Longitude.rawValue] {
-            self.longitude = longitude.double
-        }
+        case    latitude    =   "lat"
+        case    longitude   =   "lon"
     }
     
-    
-    /// get methods to the model parameters
-    
-    internal func getLatitude() -> Double {
-        return self.latitude
-    }
-    
-    internal func getLongitude() -> Double {
-        return self.longitude
-    }
 }

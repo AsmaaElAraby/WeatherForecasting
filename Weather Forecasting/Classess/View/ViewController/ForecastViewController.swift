@@ -52,12 +52,12 @@ class ForecastViewController: BaseViewController, UITableViewDelegate, UITableVi
     func didLoadWeatherForecastData(data: WeatherForecastForLocationResponse) {
         
         // check if received data or not
-        if data.getListOfDays().count > 0 {
+        if data.listOfDays.count > 0 {
             
-            self.screenTitleLabel.text = data.getCityData().getLocationName()
+            self.screenTitleLabel.text = data.cityData.name
                 
             self.forecastTableDataSource = [WeatherForADayDataModel]()
-            self.forecastTableDataSource = data.getListOfDays()
+            self.forecastTableDataSource = data.listOfDays
             
             DispatchQueue.main.async {
                 

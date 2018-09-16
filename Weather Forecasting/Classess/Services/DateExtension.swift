@@ -6,7 +6,7 @@
 //  Copyright © 2017 STRV. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
 extension Date {
     
@@ -15,15 +15,13 @@ extension Date {
     ///
     /// - Returns: String
     func dayOfTheWeek() -> String? {
-        let weekdays = [
-            "Sunday",
-            "Monday",
-            "Tuesday",
-            "Wednesday",
-            "Thursday",
-            "Friday",
-            "Satudrday,"
-        ]
+        let weekdays = ["Sunday",
+                        "Monday",
+                        "Tuesday",
+                        "Wednesday",
+                        "Thursday",
+                        "Friday",
+                        "Satudrday"]
         
         let calendar = Calendar.current
         let components = calendar.component(.weekday, from: self)

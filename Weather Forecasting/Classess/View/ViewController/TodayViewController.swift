@@ -38,12 +38,12 @@ class TodayViewController: UIViewController, TodayWeatherDelegate {
     @IBAction func shareButtonPressed() {
         
         var weatherStateSummary = ""
-        if let weatherState = todayWeatherData.getWeatherState().first {
+        if let weatherState = todayWeatherData.weather.first {
 
-            weatherStateSummary = weatherState.getElementDescription()
+            weatherStateSummary = weatherState.description
         }
 
-        let objectsToShare = ["The current weather: \(weatherStateSummary), With degree \(MesurementsConversionManager.kelvinToCelsius(kelvinTemp: self.todayWeatherData.getTempretureDetails().getTemperature()))"]
+        let objectsToShare = ["The current weather: \(weatherStateSummary), With degree \(MesurementsConversionManager.kelvinToCelsius(kelvinTemp: self.todayWeatherData.tempretureDetails.temperature))"]
         let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
         
         self.present(activityVC, animated: true, completion: nil)
@@ -78,20 +78,20 @@ class TodayViewController: UIViewController, TodayWeatherDelegate {
     /// update the screen ui text with the received data from the server
     private func updateScreenData() {
         
-        self.currentLocationLabel.text = "\(todayWeatherData.getName()), \(CountryCodeMapper.countryNameBy(code: todayWeatherData.getSunDetails().getCountry()))"
+        self.currentLocationLabel.text = "\(todayWeatherData.name), \(CountryCodeMapper.countryNameBy(code: todayWeatherData.sunDetails.country))"
         
-        if let weatherState = todayWeatherData.getWeatherState().first {
+        if let weatherState = todayWeatherData.weather.first {
             
-            self.weatherStateImageView.image = UIImage(named: WeatherStateMapper.getWeatherStateImageTitle(state: weatherState.getElementMain()))
+            self.weatherStateImageView.image = UIImage(named: WeatherStateMapper.getWeatherStateImageTitle(state: weatherState.main ?? ""))
             
-            self.weatherSummaryLabel.text = "\(MesurementsConversionManager.kelvinToCelsius(kelvinTemp: self.todayWeatherData.getTempretureDetails().getTemperature()))°C | \(weatherState.getElementMain())"
+            self.weatherSummaryLabel.text = "\(MesurementsConversionManager.kelvinToCelsius(kelvinTemp: self.todayWeatherData.tempretureDetails.temperature))°C | \(weatherState.main ?? "")"
         }
         
-        self.posibilityOfRainLabel.text = "\(self.todayWeatherData.getClouds().getAll())%"
-        self.humidityLabel.text = "\(self.todayWeatherData.getTempretureDetails().getHumidity()) mm"
-        self.windSpeedLabel.text = "\(self.todayWeatherData.getWind().getSpeed()) km/h"
-        self.pressureLabel.text = "\(self.todayWeatherData.getTempretureDetails().getPressure()) hPa"
-        self.countryCodeLabel.text = MesurementsConversionManager.windDirectionFromDegrees(degree: self.todayWeatherData.getWind().getDegree() )
+        self.posibilityOfRainLabel.text = "\(self.todayWeatherData.clouds.all)%"
+        self.humidityLabel.text = "\(self.todayWeatherData.tempretureDetails.humidity) mm"
+        self.windSpeedLabel.text = "\(self.todayWeatherData.wind.speed) km/h"
+        self.pressureLabel.text = "\(self.todayWeatherData.tempretureDetails.pressure) hPa"
+        self.countryCodeLabel.text = MesurementsConversionManager.windDirectionFromDegrees(degree: self.todayWeatherData.wind.degree)
     }
     
 }
