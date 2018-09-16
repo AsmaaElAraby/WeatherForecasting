@@ -2,11 +2,10 @@
 //  APIManager.swift
 //  MakersFair
 //
-//  Created by mac on 3/4/17.
 //  Copyright © 2017 Asmaa Mostafa. All rights reserved.
 //
 
-import UIKit
+import Foundation
 import Alamofire
 
 class APIManager {
@@ -24,9 +23,13 @@ class APIManager {
                                            onSuccess    :   @escaping (_ response : String?) -> Void,
                                            onFaliure    :   @escaping (_ error : Error) -> Void) {
         
-        Alamofire.request(url).responseString { response in
-            
-            self.manageResponse(response: response, onSuccess: onSuccess, onFaliure: onFaliure)
+        if Connectivity.isConnectedToInternet() {
+            Alamofire.request(url).responseString { response in
+                
+                self.manageResponse(response: response, onSuccess: onSuccess, onFaliure: onFaliure)
+            }
+        } else {
+            onFaliure(NSError(domain: NSURLErrorDomain, code: NSURLErrorNotConnectedToInternet, userInfo: nil) as Error)
         }
     }
     

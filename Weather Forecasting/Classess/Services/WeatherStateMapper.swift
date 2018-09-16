@@ -2,14 +2,13 @@
 //  WeatherStateMapper.swift
 //  Weather Forecasting
 //
-//  Created by mac on 4/4/17.
 //  Copyright © 2017 STRV. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
 class WeatherStateMapper: NSObject {
-
+    
     /// map the weather state recived from the server with the current images in the app
     ///
     /// - Parameter state: String

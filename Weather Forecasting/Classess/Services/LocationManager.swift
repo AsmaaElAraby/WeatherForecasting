@@ -2,7 +2,6 @@
 //  LocationManager.swift
 //  Weather Forecasting
 //
-//  Created by mac on 4/2/17.
 //  Copyright © 2017 STRV. All rights reserved.
 //
 
@@ -11,7 +10,7 @@ import CoreLocation
 import SwiftLocation
 
 class LocationManager {
-
+    
     static let shared = LocationManager()
     
     
@@ -46,7 +45,7 @@ class LocationManager {
             
             // if the received location is empty call the same method but loading it over the internet not from the GPS (it's a hack to load the user location)
             (location.coordinate.latitude != 0 && location.coordinate.longitude != 0) ? onSuccess(location.coordinate.latitude, location.coordinate.longitude) : self.currentLocationWithIpAddress(onSuccess: onSuccess, onFaliure: onFaliure)
-
+            
         }) { (err, last) -> (Void) in
             
             // if couldn't get the user current location try to load it without GPS
@@ -69,5 +68,5 @@ class LocationManager {
             onFaliure(error.localizedDescription)
         }
     }
-
+    
 }

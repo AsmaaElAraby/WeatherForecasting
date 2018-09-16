@@ -23,11 +23,11 @@ struct TodayWeatherForLocationResponse: Codable {
     let id:                 Int
     let name:               String
     let code:               Int
-
+    
     var dateDay:        String {
         return Date.timeStampToDayOfTheWeek(timeInterval: Double(dateTimeStamp)) ?? ""
     }
-
+    
     
     enum CodingKeys: String, CodingKey {
         case    coordinates         =   "coord"

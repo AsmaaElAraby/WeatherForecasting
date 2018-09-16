@@ -2,11 +2,10 @@
 //  CountryCodeMapper.swift
 //  Weather Forecasting
 //
-//  Created by mac on 4/4/17.
 //  Copyright © 2017 STRV. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
 let codeToCountry = [
     "AED" : "United Arab Emirates",
@@ -163,6 +162,7 @@ let codeToCountry = [
     "USD" : "American Samoa, British Indian Ocean Territory, Ecuador, El Salvador, Guam, Haiti, Marshall Islands, Micronesia, Northern Mariana Islands, Palau, Panama, Puerto Rico, East Timor, Turks and Caicos Islands, United States, Virgin Islands",
     "USN" : "United States",
     "USS" : "United States",
+    "US" : "United States",
     "UYU" : "Uruguay",
     "UZS" : "Uzbekistan",
     "VEB" : "Venezuela",
@@ -192,7 +192,7 @@ let codeToCountry = [
     "ZWD" : "Zimbabwe"]
 
 class CountryCodeMapper: NSObject {
-
+    
     
     /// map the received country code to the country name
     ///
@@ -205,6 +205,6 @@ class CountryCodeMapper: NSObject {
         }
         return ""
     }
-
+    
 }
 

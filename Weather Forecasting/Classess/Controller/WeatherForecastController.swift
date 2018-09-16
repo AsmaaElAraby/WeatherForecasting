@@ -8,12 +8,13 @@
 
 import UIKit
 
-protocol WeatherForecastDelegate {
-    func didLoadWeatherForecastData(data: WeatherForecastForLocationResponse)
+import UIKit
+
+protocol WeatherForecastDelegate: BaseResponseDelegate {
 }
 
 class WeatherForecastController: BaseController {
-
+    
     private var delegate: WeatherForecastDelegate!
     
     
@@ -55,39 +56,68 @@ class WeatherForecastController: BaseController {
             
             
             // init a request with the user current location and the required number of days
-            let request = WeatherForecastRequest(latitude: latitude, longitude: longitude, numberOfDays: "7")
+            let request = WeatherForecastRequest(latitude: latitude, longitude: longitude)
             
             
             // connect to the server to load the reqired weather data
             let model = WeatherForecastModel()
             model.getWeatherDataForLocationRequest(request: request, onSuccess: { (response: WeatherForecastForLocationResponse) in
-
+                
                 
                 // send the received data to the delegate if it has one
                 view.stopAnimating()
                 
                 if self.delegate == nil {
-                 
+                    
                     fatalError("You forget to set the controller delegate")
                 } else {
                     
-                    self.delegate.didLoadWeatherForecastData(data: response)
+                    self.delegate.didLoadData(data: response)
                 }
                 
                 
             }) { (error: String) in
-
+                
                 // server error or internet connection error
                 view.stopAnimating()
-                self.showErrorMessageAlert(message: error)
+                self.delegate.didFail(message: LocalizationManager.shared.localizeStringWith(key: error))
             }
             
         }) { (error: String) in
-
+            
             // please open your GPS/Internet to be able to load your location and your data
             view.stopAnimating()
-            self.showErrorMessageAlert(message: error)
+            self.delegate.didFail(message: LocalizationManager.shared.localizeStringWith(key: error))
         }
+    }
+    
+    static func formDateIntoListOfSubDaysLists(data: [WeatherForADayDataModel]) -> [[WeatherForADayDataModel]] {
+        
+        var result = [[WeatherForADayDataModel]]()
+        
+        var firstDate = data[0].dateTimeStamp
+        var elementsWithSameDate = [WeatherForADayDataModel]()
+        elementsWithSameDate.append(data[0])
+        
+        for index in 1...data.count-1 {
+            
+            if Date(timeIntervalSince1970: TimeInterval(firstDate)).day != Date(timeIntervalSince1970: TimeInterval(data[index].dateTimeStamp)).day {
+                
+                if elementsWithSameDate.count > 0{
+                    result.append(elementsWithSameDate)
+                    elementsWithSameDate = []
+                }
+            } else {
+                elementsWithSameDate.append(data[index])
+            }
+            
+            if index <= data.count - 1 {
+                firstDate = data[index].dateTimeStamp
+            }
+        }
+        
+        return result
+        
     }
     
 }

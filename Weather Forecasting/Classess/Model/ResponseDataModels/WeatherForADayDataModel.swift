@@ -11,29 +11,43 @@ import Foundation
 struct WeatherForADayDataModel: Codable {
     
     let dateTimeStamp:  Int
-    let temperature:    TemperatureDataModel
-    let pressure:       Double
-    let humidity:       Double
+    let main:           TemperatureDataModel
     let weather:        [WeatherStateDataModel]
-    let speed:          Double
-    let degree:         Double
-    let clouds:         Double
-    
+    let clouds:         CloudsDetailsDataModel
+    let wind:           WindDetailsDataModel
+    let rain:           RainDetails
+    let sysDetails:     SysDetails
+    let dateAsText:     String
     
     
     enum CodingKeys: String, CodingKey {
         case    dateTimeStamp   =   "dt"
-        case    temperature =   "temp"
-        case    pressure
-        case    humidity
+        case    main
         case    weather
-        case    speed
-        case    degree      =   "deg"
         case    clouds
+        case    wind
+        case    rain
+        case    sysDetails      =   "sys"
+        case    dateAsText      =   "dt_txt"
     }
     
     var dateDay:    String {
         return Date.timeStampToDayOfTheWeek(timeInterval: Double(dateTimeStamp)) ?? ""
     }
     
+    var hour:    String {
+        return Date.timeStampToDayHour(timeInterval: Double(dateTimeStamp)) ?? ""
+    }
+}
+
+struct RainDetails: Codable {
+    let volumeForLast3h: Double?
+    
+    enum CodingKeys: String, CodingKey {
+        case    volumeForLast3h   =   "3h"
+    }
+}
+
+struct SysDetails: Codable {
+    let pod:    String?
 }

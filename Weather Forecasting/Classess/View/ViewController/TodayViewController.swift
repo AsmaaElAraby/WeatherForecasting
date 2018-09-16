@@ -8,7 +8,8 @@
 
 import UIKit
 
-class TodayViewController: UIViewController, TodayWeatherDelegate {
+class TodayViewController: BaseViewController {
+    
     
     @IBOutlet weak var mainScrollView: UIScrollView!
     @IBOutlet weak var weatherStateImageView: UIImageView!
@@ -23,26 +24,35 @@ class TodayViewController: UIViewController, TodayWeatherDelegate {
     
     @IBOutlet weak var shareButton: UIButton!
     
-    private var todayWeatherData: TodayWeatherForLocationResponse!
+    fileprivate var todayWeatherData: TodayWeatherForLocationResponse!
+    private var doneLoadingData = false
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
-        self.loadWeatherForecastDataForToday()
+        if doneLoadingData == false {
+            doneLoadingData = true
+            self.loadWeatherForecastDataForToday()
+        }
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        if todayWeatherData == nil {
+            doneLoadingData = false
+        }
     }
+    
     
     @IBAction func shareButtonPressed() {
         
         var weatherStateSummary = ""
         if let weatherState = todayWeatherData.weather.first {
-
+            
             weatherStateSummary = weatherState.description
         }
-
+        
         let objectsToShare = ["The current weather: \(weatherStateSummary), With degree \(MesurementsConversionManager.kelvinToCelsius(kelvinTemp: self.todayWeatherData.tempretureDetails.temperature))"]
         let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
         
@@ -57,12 +67,48 @@ class TodayViewController: UIViewController, TodayWeatherDelegate {
         controller.loadTodayDataForCurrentLocation()
     }
     
+    
+    /// update the screen ui text with the received data from the server
+    fileprivate func updateScreenData() {
+        
+        self.currentLocationLabel.text = "\(todayWeatherData.name), \(CountryCodeMapper.countryNameBy(code: todayWeatherData.sunDetails.country))"
+        
+        if let weatherState = todayWeatherData.weather.first {
+            
+            self.weatherStateImageView.image = UIImage(named: WeatherStateMapper.getWeatherStateImageTitle(state: weatherState.main))
+            
+            self.weatherSummaryLabel.text = "\(MesurementsConversionManager.kelvinToCelsius(kelvinTemp: self.todayWeatherData.tempretureDetails.temperature))°C | \(weatherState.main)"
+        }
+        
+        self.posibilityOfRainLabel.text = "\(self.todayWeatherData.clouds.all)%"
+        self.humidityLabel.text = "\(self.todayWeatherData.tempretureDetails.humidity) mm"
+        self.windSpeedLabel.text = "\(self.todayWeatherData.wind.speed) km/h"
+        self.pressureLabel.text = "\(self.todayWeatherData.tempretureDetails.pressure) hPa"
+        self.countryCodeLabel.text = MesurementsConversionManager.windDirectionFromDegrees(degree: self.todayWeatherData.wind.degree)
+    }
+    
+}
+
+
+extension TodayViewController: TodayWeatherDelegate {
+    
     /// MARK: TodayWeatherDelegate Handling
     
-    func didLoadTodayWeatherData(data: TodayWeatherForLocationResponse) {
-
+    func didLoadData<T>(data: T) where T : Decodable, T : Encodable {
+        
+        guard let data = data as? TodayWeatherForLocationResponse, data.id > 0 else {
+            
+            self.noDataFoundLabel?.isHidden = false
+            self.mainScrollView.isHidden = true
+            return
+        }
+        
+        self.mainScrollView.isHidden = false
+        self.noDataFoundLabel?.isHidden = true
+        
         self.todayWeatherData = data
-
+        currentCityName = data.name
+        
         DispatchQueue.main.async {
             
             self.updateScreenData()
@@ -71,27 +117,11 @@ class TodayViewController: UIViewController, TodayWeatherDelegate {
     
     func didFail(message: String) {
         
-        self.mainScrollView.isHidden = true
-    }
-    
-    
-    /// update the screen ui text with the received data from the server
-    private func updateScreenData() {
-        
-        self.currentLocationLabel.text = "\(todayWeatherData.name), \(CountryCodeMapper.countryNameBy(code: todayWeatherData.sunDetails.country))"
-        
-        if let weatherState = todayWeatherData.weather.first {
-            
-            self.weatherStateImageView.image = UIImage(named: WeatherStateMapper.getWeatherStateImageTitle(state: weatherState.main ?? ""))
-            
-            self.weatherSummaryLabel.text = "\(MesurementsConversionManager.kelvinToCelsius(kelvinTemp: self.todayWeatherData.tempretureDetails.temperature))°C | \(weatherState.main ?? "")"
+        if message.count > 0 {
+            self.noDataFoundLabel?.text = message
         }
-        
-        self.posibilityOfRainLabel.text = "\(self.todayWeatherData.clouds.all)%"
-        self.humidityLabel.text = "\(self.todayWeatherData.tempretureDetails.humidity) mm"
-        self.windSpeedLabel.text = "\(self.todayWeatherData.wind.speed) km/h"
-        self.pressureLabel.text = "\(self.todayWeatherData.tempretureDetails.pressure) hPa"
-        self.countryCodeLabel.text = MesurementsConversionManager.windDirectionFromDegrees(degree: self.todayWeatherData.wind.degree)
+        self.noDataFoundLabel?.isHidden = false
+        self.mainScrollView.isHidden = true
     }
     
 }

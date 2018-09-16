@@ -10,7 +10,7 @@ import UIKit
 import RevealingSplashView
 
 class BaseTabBarController: UITabBarController {
-
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         
@@ -22,7 +22,7 @@ class BaseTabBarController: UITabBarController {
         
         self.updateTabBarApperance()
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
@@ -53,7 +53,7 @@ class BaseTabBarController: UITabBarController {
         UITabBarItem.appearance().setTitleTextAttributes([kCTForegroundColorAttributeName as NSAttributedStringKey: ApplicationColors.UnselectedTabbarItemColor], for:.normal)
         
         UITabBarItem.appearance().setTitleTextAttributes([kCTForegroundColorAttributeName as NSAttributedStringKey: ApplicationColors.SelectedTabbarItemColor], for:.selected)
-
+        
     }
     
     

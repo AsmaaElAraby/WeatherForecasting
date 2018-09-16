@@ -8,9 +8,7 @@
 
 import UIKit
 
-protocol TodayWeatherDelegate {
-    func didLoadTodayWeatherData(data: TodayWeatherForLocationResponse)
-    func didFail(message: String)
+protocol TodayWeatherDelegate: BaseResponseDelegate {
 }
 
 class TodayWeatherController: BaseController {
@@ -55,7 +53,7 @@ class TodayWeatherController: BaseController {
         LocationManager.shared.currentLocation(onSuccess: { (latitude: Double, longitude: Double) in
             
             // init a request with the user current location and the required number of days
-            let request = WeatherForecastRequest(latitude: latitude, longitude: longitude, numberOfDays: nil)
+            let request = WeatherForecastRequest(latitude: 37.785834, longitude: -122.406419)
             
             // connect to the server to load the reqired weather data
             let model = TodayModel()
@@ -69,21 +67,21 @@ class TodayWeatherController: BaseController {
                     fatalError("You forget to set the controller delegate")
                 } else {
                     
-                    self.delegate.didLoadTodayWeatherData(data: response)
+                    self.delegate.didLoadData(data: response)
                 }
                 
             }) { (error: String) in
                 
                 // server error or internet connection error
                 view.stopAnimating()
-                self.showErrorMessageAlert(message: error)
+                self.delegate.didFail(message: LocalizationManager.shared.localizeStringWith(key: error))
             }
             
         }) { (error: String) in
             
             // please open your GPS/Internet to be able to load your location and your data
             view.stopAnimating()
-            self.showErrorMessageAlert(message: error)
+            self.delegate.didFail(message: LocalizationManager.shared.localizeStringWith(key: error))
         }
     }
     

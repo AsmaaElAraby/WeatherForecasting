@@ -19,4 +19,8 @@ struct LocationCoordinatesDataModel: Codable {
         case    longitude   =   "lon"
     }
     
+    static func == (lhs: LocationCoordinatesDataModel, rhs: LocationCoordinatesDataModel) -> Bool {
+        return (lhs.longitude == rhs.longitude && lhs.latitude == rhs.latitude)
+    }
+    
 }

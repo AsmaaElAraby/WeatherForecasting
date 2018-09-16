@@ -2,12 +2,11 @@
 //  LocalizationManager.swift
 //  MakersFair
 //
-//  Created by mac on 3/4/17.
 //  Copyright © 2017 Asmaa Mostafa. All rights reserved.
 //
 
 
-import UIKit
+import Foundation
 
 class LocalizationManager {
     
@@ -36,7 +35,7 @@ class LocalizationManager {
     func localizeStringWith (key: String) -> String {
         
         self.localizationList()
-
+        
         var localizedMessage = ""
         if key.contains("\n") == true {
             
@@ -71,12 +70,12 @@ class LocalizationManager {
                 let titleWithLanguages: NSDictionary? = data.value(forKey: key) as? NSDictionary
                 
                 if let title = titleWithLanguages {
-
+                    
                     if let text = title.value(forKey: "en") as? String {
                         
                         return text
                     }
-                    
+                        
                     else {
                         
                         return key

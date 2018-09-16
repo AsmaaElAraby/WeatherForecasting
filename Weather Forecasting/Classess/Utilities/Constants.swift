@@ -2,7 +2,6 @@
 //  Constants.swift
 //  Weather Forecasting
 //
-//  Created by mac on 4/2/17.
 //  Copyright © 2017 STRV. All rights reserved.
 //
 
@@ -11,7 +10,7 @@ import UIKit
 struct AppURLs {
     
     static let BaseURL  = "http://api.openweathermap.org/"
-    static let DailyForecast    = BaseURL.appending("data/2.5/forecast/daily?")
+    static let DailyForecast    = BaseURL.appending("data/2.5/forecast?")
     static let TodayForecast    = BaseURL.appending("data/2.5/weather?")
 }
 
@@ -48,3 +47,5 @@ struct ApplicationColors {
     static let UnselectedTabbarItemColor = UIColor(red:0.27, green:0.27, blue:0.27, alpha:1.0)
     static let SelectedTabbarItemColor = UIColor(red:0.19, green:0.51, blue:0.98, alpha:1.0)
 }
+
+var currentCityName: String?

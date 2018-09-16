@@ -19,25 +19,15 @@ enum WeatherStateImageTitles: String {
 }
 
 class WeatherSummaryTableViewCell: UITableViewCell {
-
+    
     @IBOutlet weak var weatherDegreeLabel: UILabel!
     @IBOutlet weak var dayLabel: UILabel!
     @IBOutlet weak var weatherStateLabel: UILabel!
     @IBOutlet weak var weatherStateImageView: UIImageView!
+    @IBOutlet weak var separatorImageView: UIImageView!
     
     private var cellData: WeatherForADayDataModel!
-
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
     
     
     /// set the cell data
@@ -47,17 +37,22 @@ class WeatherSummaryTableViewCell: UITableViewCell {
         self.cellData = cellData
         
         DispatchQueue.main.async {
-
-            self.weatherDegreeLabel.text = "\(MesurementsConversionManager.kelvinToCelsius(kelvinTemp: self.cellData.temperature.appropriateTempreture))°"
-            self.dayLabel.text = self.cellData.dateDay
+            
+            self.weatherDegreeLabel.text = "\(MesurementsConversionManager.kelvinToCelsius(kelvinTemp: self.cellData.main.temp))°"
+            self.dayLabel.text = self.cellData.hour
             
             if let weatherState = self.cellData.weather.first {
-            
+                
                 self.weatherStateLabel.text = weatherState.main
-                self.weatherStateImageView.image = UIImage(named: WeatherStateMapper.getWeatherStateImageTitle(state: weatherState.main ?? ""))
+                self.weatherStateImageView.image = UIImage(named: WeatherStateMapper.getWeatherStateImageTitle(state: weatherState.main))
                 
             }
         }
+    }
+    
+    func separatorVisable(_ flag: Bool) {
+        
+        separatorImageView.isHidden = !flag
     }
     
 }

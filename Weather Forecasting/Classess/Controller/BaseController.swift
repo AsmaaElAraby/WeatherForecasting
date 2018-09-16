@@ -9,8 +9,14 @@
 import UIKit
 import SwiftMessages
 
-class BaseController: NSObject {
+protocol BaseResponseDelegate {
+    func didLoadData<T: Codable>(data: T)
+    func didFail(message: String)
+}
 
+
+class BaseController {
+    
     var viewController : UIViewController!
     
     

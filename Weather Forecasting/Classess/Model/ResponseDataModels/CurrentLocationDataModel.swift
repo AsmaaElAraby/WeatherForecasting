@@ -18,11 +18,11 @@ struct CurrentLocationDataModel: Codable {
     
     
     enum CodingKeys: String, CodingKey {
-        case    id           =   "id"
-        case    name         =   "name"
+        case    id
+        case    name
         case    coordinates  =   "coord"
-        case    country      =   "country"
-        case    population   =   "population"
+        case    country
+        case    population
     }
     
 }

@@ -10,36 +10,23 @@ import Foundation
 
 struct TemperatureDataModel: Codable {
     
+    let temp:       Double
     let minimum:    Double
     let maximum:    Double
-    let morning:    Double
-    let day:        Double
-    let evening:    Double
-    let night:      Double
-    
+    let pressure:   Double
+    let seaLevel:   Double
+    let grndLevel:  Double
+    let humidity:   Double
+    let tempKF:     Double
     
     enum CodingKeys: String, CodingKey {
-        case minimum    = "min"
-        case maximum    = "max"
-        case morning    = "morn"
-        case day
-        case evening    = "eve"
-        case night      = "night"
-    }
-    
-    /// get the appropriate tempreture according to the current day interval
-    ///
-    /// - Returns: Double
-    var appropriateTempreture: Double {
-        
-        let hour = Calendar.current.component(.hour, from: Date())
-        
-        switch hour {
-        case 6..<12 : return self.morning
-        case 12..<17 : return self.day
-        case 17..<22 : return self.evening
-        default: return self.night
-        }
-        
+        case temp
+        case minimum    = "temp_min"
+        case maximum    = "temp_max"
+        case pressure
+        case seaLevel   = "sea_level"
+        case grndLevel  = "grnd_level"
+        case humidity
+        case tempKF     = "temp_kf"
     }
 }

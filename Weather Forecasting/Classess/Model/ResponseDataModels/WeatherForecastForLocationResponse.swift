@@ -14,7 +14,7 @@ struct WeatherForecastForLocationResponse: Codable {
     let code:               String
     let message:            Double
     let numberOfDays:       Int
-    let listOfDays:         [WeatherForADayDataModel]
+    let listOfDays:         [WeatherForADayDataModel]?
     
     
     enum CodingKeys: String, CodingKey {

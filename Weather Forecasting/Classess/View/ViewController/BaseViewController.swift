@@ -9,8 +9,16 @@
 import UIKit
 
 class BaseViewController: UIViewController {
-
+    
     // MARK : Animate table view cells
+    
+    @IBOutlet weak var noDataFoundLabel: UILabel?
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        noDataFoundLabel?.isHidden = true
+    }
     
     internal func animateTable(tableView : UITableView, animateDuration : Double) {
         tableView.reloadData()

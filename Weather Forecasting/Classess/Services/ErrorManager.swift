@@ -2,14 +2,13 @@
 //  ErrorManager.swift
 //  MakersFair
 //
-//  Created by mac on 3/4/17.
 //  Copyright © 2017 Asmaa Mostafa. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
 class ErrorManager {
-
+    
     private let NetworkCodes = [-1001, -1003, -1004, -1005, -1009, -1014, -1016, 500]
     
     
