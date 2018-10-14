@@ -10,8 +10,8 @@ import Foundation
 
 struct WindDetailsDataModel: Codable {
     
-    let speed:  Double
-    let degree: Double
+    let speed: Double
+    let degree: Double?
     
     
     enum CodingKeys: String, CodingKey {
@@ -20,4 +20,3 @@ struct WindDetailsDataModel: Codable {
     }
     
 }
-

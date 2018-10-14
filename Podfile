@@ -7,13 +7,11 @@ target 'Weather Forecasting' do
   use_frameworks!
   
   pod 'Alamofire', '~> 4.7.3'
-  pod 'SwiftLocation', '~> 3.2.3'
-  pod 'SwiftyJSON', '~> 4.0.0'
-  pod 'SwiftMessages', '~> 5.0.0'
   pod 'JGProgressHUD', '~> 2.0.3'
-  pod 'Firebase/Database', '~> 5.7.0'
-  pod 'RevealingSplashView', '~> 0.5.0'
-  
+  pod 'Firebase', '5.9.0'
+  pod 'Firebase/Database'
+  pod 'Firebase/Core'
+
   # Pods for Weather Forecasting
 
   target 'Weather ForecastingTests' do

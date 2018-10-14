@@ -8,117 +8,69 @@
 
 import UIKit
 
-import UIKit
-
-protocol WeatherForecastDelegate: BaseResponseDelegate {
+protocol WeatherForecastDelegate: RequestDelegate {
 }
 
 class WeatherForecastController: BaseController {
-    
-    private var delegate: WeatherForecastDelegate!
-    
-    
-    /// init the controller with it's parent view controller
-    ///
-    /// - Parameter viewController: UIViewController
-    init(viewController: UIViewController) {
-        
-        super.init()
-        self.viewController = viewController
-    }
-    
-    
-    /// set the controller delegate
-    ///
-    /// - Parameter delegate:   WeatherForecastDelegate
-    internal func setDelegate(delegate: WeatherForecastDelegate) {
-        self.delegate = delegate
-    }
-    
     
     /// load the waether forecast data for today and the next 7 days for the received loaction
     /// Then update the view with the recived data
     ///
     /// - Parameters:
-    ///   - request:    WeatherForecastRequest
+    ///   - request:    WeatherRequest
     ///   - onSuccess:  Block
     ///   - onFaliure:  Block
-    internal func loadForecastDataForCurrentLocation() {
+    internal func loadForecastWeatherForCurrentLocation() {
         
+        self.delegate?.willLoad()
         
-        // display a loading indicator view
-        let view = AndicatingView()
-        view.startAnimating(view: self.viewController.view)
-        
-        
-        // load the user location first
-        LocationManager.shared.currentLocation(onSuccess: { (latitude: Double, longitude: Double) in
+        if currentLocation != nil {
             
-            currentLocation = (lat: latitude, lon: longitude)
-            
-            // init a request with the user current location and the required number of days
-            let request = WeatherForecastRequest(latitude: latitude, longitude: longitude)
-            
-            
-            // connect to the server to load the reqired weather data
-            let model = WeatherForecastModel()
-            model.getWeatherDataForLocationRequest(request: request, onSuccess: { (response: WeatherForecastForLocationResponse) in
+            dailyForecastFor(latitude: currentLocation?.latitude ?? 0.0, longitude: currentLocation?.latitude ?? 0.0)
+        } else {
+         
+            LocationManager.shared.location = { [unowned self] (_ location: (latitude: Double, longitude: Double)?, _ error: String?) in
                 
-                
-                // send the received data to the delegate if it has one
-                view.stopAnimating()
-                
-                if self.delegate == nil {
+                guard (error == nil || error == "") && (error?.count == nil || error?.count == 0) else {
                     
-                    fatalError("You forget to set the controller delegate")
-                } else {
-                    
-                    self.delegate.didLoadData(data: response)
+                    self.delegate?.didFailWith(message: NSLocalizedString(error ?? "", comment: ""))
+                    return
                 }
                 
+                self.dailyForecastFor(latitude: location?.latitude ?? 0.0, longitude: location?.latitude ?? 0.0)
+            }
+        }
+    }
+    
+    func listOfSubDaysFrom(data: [WeatherForADayDataModel]) -> [[WeatherForADayDataModel]] {
+        
+        return WeatherForecastModel.listOfSubDaysFrom(data: data)
+    }
+    
+    private func dailyForecastFor(latitude: Double, longitude: Double) {
+        
+        // init a request with the user current location and the required number of days
+        let request = WeatherRequest(latitude: latitude, longitude: longitude)
+        
+        // connect to the server to load the reqired weather data
+        let model = WeatherForecastModel()
+        model.getDailyForecastFor(request: request, onSuccess: { (response: WeatherForecastForLocationResponse) in
+            
+            // send the received data to the delegate if it has one
+            
+            if self.delegate == nil {
                 
-            }) { (error: String) in
+                fatalError("You forget to set the controller delegate")
+            } else {
                 
-                // server error or internet connection error
-                view.stopAnimating()
-                self.delegate.didFail(message: LocalizationManager.shared.localizeStringWith(key: error))
+                self.delegate?.didLoad(data: response)
             }
             
         }) { (error: String) in
             
-            // please open your GPS/Internet to be able to load your location and your data
-            view.stopAnimating()
-            self.delegate.didFail(message: LocalizationManager.shared.localizeStringWith(key: error))
+            // server error or internet connection error
+            self.delegate?.didFailWith(message: NSLocalizedString(error, comment: ""))
         }
-    }
-    
-    static func formDateIntoListOfSubDaysLists(data: [WeatherForADayDataModel]) -> [[WeatherForADayDataModel]] {
-        
-        var result = [[WeatherForADayDataModel]]()
-        
-        var firstDate = data[0].dateTimeStamp
-        var elementsWithSameDate = [WeatherForADayDataModel]()
-        elementsWithSameDate.append(data[0])
-        
-        for index in 1...data.count-1 {
-            
-            if Date(timeIntervalSince1970: TimeInterval(firstDate)).day != Date(timeIntervalSince1970: TimeInterval(data[index].dateTimeStamp)).day {
-                
-                if elementsWithSameDate.count > 0{
-                    result.append(elementsWithSameDate)
-                    elementsWithSameDate = []
-                }
-            } else {
-                elementsWithSameDate.append(data[index])
-            }
-            
-            if index <= data.count - 1 {
-                firstDate = data[index].dateTimeStamp
-            }
-        }
-        
-        return result
-        
     }
     
 }

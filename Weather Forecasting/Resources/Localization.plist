@@ -2,20 +2,22 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    <key>generalErrorLoadingData</key>
-    <dict>
-        <key>en</key>
-        <string>Error loading weather data please try again</string>
-    </dict>
-    <key>noDataFound</key>
-    <dict>
-        <key>en</key>
-        <string>No data received</string>
-    </dict>
-    <key>noInternet</key>
-    <dict>
-        <key>en</key>
-        <string>Please check you internet connection</string>
-    </dict>
+	<key>generalErrorLoadingData</key>
+	<dict>
+		<key>en</key>
+		<string>Error loading weather data please try again</string>
+	</dict>
+	<key>noDataFound</key>
+	<dict>
+		<key>en</key>
+		<string>No data received</string>
+	</dict>
+	<key>noInternet</key>
+	<dict>
+		<key>en</key>
+		<string>Please check you internet connection</string>
+	</dict>
+	<key>requestEnableLocation</key>
+	<dict/>
 </dict>
 </plist>

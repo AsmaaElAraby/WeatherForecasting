@@ -8,7 +8,7 @@
 
 import XCTest
 import CoreLocation
-@testable import Weather_Forecasting
+@testable import WeatherForecasting
 
 class WeatherForecastModelTest: XCTestCase {
     
@@ -35,7 +35,7 @@ class WeatherForecastModelTest: XCTestCase {
 //        }
         
         
-        /*let request = WeatherForecastRequest(latitude: "20430", longitude: "87382", NumberOfDays: "8")
+        /*let request = WeatherRequest(latitude: "20430", longitude: "87382", NumberOfDays: "8")
 //        print(request.asString())
 
         let model = WeatherForecastModel()

@@ -17,17 +17,10 @@ extension Date {
     ///
     /// - Returns: String
     func dayOfTheWeek() -> String? {
-        let weekdays = ["Sunday",
-                        "Monday",
-                        "Tuesday",
-                        "Wednesday",
-                        "Thursday",
-                        "Friday",
-                        "Satudrday"]
         
-        let calendar = Calendar.current
-        let components = calendar.component(.weekday, from: self)
-        return weekdays[components - 1]
+        let formatter = DateFormatter()
+        formatter.dateFormat = "EEEE"
+        return formatter.string(from: self).capitalized
     }
     
     
@@ -35,7 +28,7 @@ extension Date {
     ///
     /// - Parameter timeInterval: TimeInterval
     /// - Returns:  String?
-    static func timeStampToDayOfTheWeek(timeInterval: TimeInterval) -> String? {
+    static func toWeekDay(timeInterval: TimeInterval) -> String? {
         
         let date = Date(timeIntervalSince1970: timeInterval)
         return date.dayOfTheWeek()
@@ -45,7 +38,7 @@ extension Date {
     ///
     /// - Parameter timeInterval: TimeInterval
     /// - Returns:  String?
-    static func timeStampToDayHour(timeInterval: TimeInterval) -> String? {
+    static func toHourMinutes(timeInterval: TimeInterval) -> String? {
         
         let date = Date(timeIntervalSince1970: timeInterval)
         let formatter = DateFormatter()
@@ -55,7 +48,22 @@ extension Date {
         return timeString
     }
     
-    
+    /// convert date of time stamp to hour of the day
+    ///
+    /// - Parameter timeInterval: TimeInterval
+    /// - Returns:  String?
+    static func isDay(timeInterval: TimeInterval) -> Bool {
+
+        let date     = Date(timeIntervalSince1970: timeInterval)
+        let calendar = Calendar.current
+        let hour     = calendar.component(.hour, from: date)
+
+        if 3 < hour, hour < 16 {
+            return true
+        }
+        
+        return false
+    }
     
     /// check if the received date is today
     ///

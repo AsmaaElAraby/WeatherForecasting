@@ -1,0 +1,26 @@
+/* 
+  File.strings
+  Weather Forecasting
+
+  Created by Asmaa Mostafa on 02/10/2018.
+  Copyright © 2018 STRV. All rights reserved.
+*/
+"requestEnableLocation" = "Location permissions are required for Weather Forecasting application to operate.";
+
+"generalErrorLoadingData"   = "Error loading weather data please try again";
+
+"Cancel"    = "Cancel";
+
+"Settings"  = "Settings";
+
+"locationState" = "Location State";
+
+"noDataFound"   = "No data received";
+
+"noInternet"    = "Please check you internet connection";
+
+"theCurrentWeather" = "The current weather: ";
+
+"withDegree" = ", With degree ";
+
+"locationLoadingError" = "Could not load your location if you may check your location permissions then try again";

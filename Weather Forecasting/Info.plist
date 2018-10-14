@@ -18,6 +18,8 @@
 	<string>1.0.0</string>
 	<key>CFBundleVersion</key>
 	<string>1.0.0.0</string>
+	<key>FirebaseScreenReportingEnabled</key>
+	<false/>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -26,6 +28,11 @@
 		<true/>
 		<key>NSExceptionDomains</key>
 		<dict>
+			<key>app-measurement.com</key>
+			<dict>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+			</dict>
 			<key>ip-api.com</key>
 			<dict>
 				<key>NSIncludesSubdomains</key>
@@ -35,16 +42,15 @@
 				<key>NSTemporaryExceptionMinimumTLSVersion</key>
 				<string>TLSv1.1</string>
 			</dict>
-            <key>uservoice.com</key>
-            <dict>
-                <key>NSIncludesSubdomains</key>
-                <true/>
-                <key>NSExceptionRequiresForwardSecrecy</key>
-                <false/>
-            </dict>
+			<key>uservoice.com</key>
+			<dict>
+				<key>NSExceptionRequiresForwardSecrecy</key>
+				<false/>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+			</dict>
 		</dict>
 	</dict>
-    
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Location permissions are required for Weather Forecasting application to operate.</string>
 	<key>UILaunchStoryboardName</key>
@@ -61,5 +67,7 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<true/>
 </dict>
 </plist>

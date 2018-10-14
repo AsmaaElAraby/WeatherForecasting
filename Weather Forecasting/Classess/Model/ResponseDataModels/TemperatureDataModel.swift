@@ -10,23 +10,24 @@ import Foundation
 
 struct TemperatureDataModel: Codable {
     
-    let temp:       Double
+    let temperature:    Double
     let minimum:    Double
     let maximum:    Double
     let pressure:   Double
     let seaLevel:   Double
-    let grndLevel:  Double
+    let groundLevel:  Double
     let humidity:   Double
     let tempKF:     Double
     
     enum CodingKeys: String, CodingKey {
-        case temp
+        case temperature    = "temp"
         case minimum    = "temp_min"
         case maximum    = "temp_max"
         case pressure
         case seaLevel   = "sea_level"
-        case grndLevel  = "grnd_level"
+        case groundLevel    = "grnd_level"
         case humidity
         case tempKF     = "temp_kf"
     }
+    
 }
