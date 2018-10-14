@@ -345,7 +345,7 @@
 		041C5DC01E90B25D00CDD5B2 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				04D435CA1E93954B006B588A /* Mappers */,
+				04D435CA1E93954B006B588A /* Handlers */,
 				04D435C91E93953E006B588A /* Managers */,
 				04D435C61E939519006B588A /* Extensions */,
 			);
@@ -455,14 +455,14 @@
 			name = Managers;
 			sourceTree = "<group>";
 		};
-		04D435CA1E93954B006B588A /* Mappers */ = {
+		04D435CA1E93954B006B588A /* Handlers */ = {
 			isa = PBXGroup;
 			children = (
 				7EBE4D15214E7ECA00135A22 /* CountryHandler.swift */,
 				7EBE4D16214E7ECA00135A22 /* WeatherHandler.swift */,
 				72351F5521728AC7004396B5 /* TemperatureHandler.swift */,
 			);
-			name = Mappers;
+			name = Handlers;
 			sourceTree = "<group>";
 		};
 		534B1D123013CF65DC7EDF2F /* Pods */ = {
