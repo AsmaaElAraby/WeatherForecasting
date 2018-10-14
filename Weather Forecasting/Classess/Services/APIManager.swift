@@ -8,31 +8,41 @@
 import Foundation
 import Alamofire
 
+protocol RequestDelegate: class {
+    func willLoad()
+    func didLoad<T: Codable>(data: T)
+    func didFailWith(message: String)
+}
+
 class APIManager {
     
     static let shared = APIManager()
     
-    
     /// Load data from url with GET method
     ///
     /// - Parameters:
-    ///   - url         : String (request url + user data)
+    ///   - request     : RequestProvider
     ///   - onSuccess   : Block
     ///   - onFaliure   : Block
-    internal func requestDataWithGetMethod(url          :   String,
-                                           onSuccess    :   @escaping (_ response : String?) -> Void,
-                                           onFaliure    :   @escaping (_ error : Error) -> Void) {
+    internal func fetchDataFor(request: RequestProvider, onSuccess: @escaping (_ response : String?) -> Void, onFaliure: @escaping (_ error : Error) -> Void) {
         
+        guard let urlRequest = request.urlRequest else {
+            onFaliure(NSError(domain: NSURLErrorDomain, code: NSURLErrorBadURL, userInfo: nil) as Error)
+            return
+        }
+
         if Connectivity.isConnectedToInternet() {
-            Alamofire.request(url).responseString { response in
+            Alamofire.request(urlRequest)
+                .validate(statusCode: 200..<300)
+                .validate(contentType: ["application/json"])
+                .responseString { response in
                 
-                self.manageResponse(response: response, onSuccess: onSuccess, onFaliure: onFaliure)
+                self.manage(response: response, onSuccess: onSuccess, onFaliure: onFaliure)
             }
         } else {
             onFaliure(NSError(domain: NSURLErrorDomain, code: NSURLErrorNotConnectedToInternet, userInfo: nil) as Error)
         }
     }
-    
     
     /// make sure that the success block only returns the success state and the faliure block returns the faliure state
     ///
@@ -40,12 +50,9 @@ class APIManager {
     ///   - response    :  DataResponse<String>
     ///   - onSuccess   : Block
     ///   - onFaliure   : Block
-    private func manageResponse(response    :   DataResponse<String>,
-                                onSuccess   :   @escaping (_ response :  String?)    ->  Void,
-                                onFaliure   :   @escaping (_ error : Error) -> Void) {
+    private func manage(response: DataResponse<String>, onSuccess: @escaping (_ response:  String?) -> Void, onFaliure: @escaping (_ error: Error) -> Void) {
         
         switch response.result {
-            
         case .success:
             if response.result.error == nil && response.result.value != nil {
                 
@@ -55,14 +62,10 @@ class APIManager {
                 
                 onFaliure(response.result.error!)
             }
-            break
             
         case .failure(let error):
             
             onFaliure(error)
-            
-            break
-            
         }
     }
     

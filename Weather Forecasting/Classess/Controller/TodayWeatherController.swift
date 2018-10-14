@@ -8,83 +8,53 @@
 
 import UIKit
 
-protocol TodayWeatherDelegate: BaseResponseDelegate {
+protocol TodayWeatherDelegate: RequestDelegate {
 }
 
 class TodayWeatherController: BaseController {
-    
-    private var delegate: TodayWeatherDelegate!
-    
-    
-    /// init the controller with it's parent view controller
-    ///
-    /// - Parameter viewController: UIViewController
-    init(viewController: UIViewController) {
-        
-        super.init()
-        self.viewController = viewController
-    }
-    
-    
-    /// set the controller delegate
-    ///
-    /// - Parameter delegate:   TodayWeatherDelegate
-    internal func setDelegate(delegate: TodayWeatherDelegate) {
-        self.delegate = delegate
-    }
-    
     
     /// load the waether forecast data for today and the next 7 days for the received loaction
     /// Then update the view with the recived data
     ///
     /// - Parameters:
-    ///   - request:    WeatherForecastRequest
+    ///   - request:    WeatherRequest
     ///   - onSuccess:  Block
     ///   - onFaliure:  Block
-    internal func loadTodayDataForCurrentLocation() {
+    internal func loadTodayWeatherForCurrentLocation() {
         
+        self.delegate?.willLoad()
         
-        // display a loading indicator view
-        let view = AndicatingView()
-        view.startAnimating(view: self.viewController.view)
-        
-        
-        // load the user location first
-        LocationManager.shared.currentLocation(onSuccess: { (latitude: Double, longitude: Double) in
+        LocationManager.shared.location = { (_ location: (latitude: Double, longitude: Double)?, _ error: String?) in
             
-            currentLocation = (lat: latitude, lon: longitude)
+            guard (error == nil || error == "") && (error?.count == nil || error?.count == 0) else {
+                
+                self.delegate?.didFailWith(message: NSLocalizedString(error ?? "", comment: ""))
+                return
+            }
             
             // init a request with the user current location and the required number of days
-            let request = WeatherForecastRequest(latitude: latitude, longitude: longitude)
+            let request = WeatherRequest(latitude: location?.latitude ?? 0.0, longitude: location?.longitude  ?? 0.0)
             
             // connect to the server to load the reqired weather data
-            let model = TodayModel()
-            model.getTodayWeatherDataForLocationRequest(request: request, onSuccess: { (response: TodayWeatherForLocationResponse) in
+            let model = WeatherForecastModel()
+            model.getTodayForecastFor(request: request, onSuccess: { (response: TodayWeatherForLocationResponse) in
                 
                 // send the received data to the delegate if it has one
-                view.stopAnimating()
-                
                 if self.delegate == nil {
                     
                     fatalError("You forget to set the controller delegate")
                 } else {
                     
-                    self.delegate.didLoadData(data: response)
+                    self.delegate?.didLoad(data: response)
                 }
                 
-            }) { (error: String) in
+            }) { (error) in
                 
                 // server error or internet connection error
-                view.stopAnimating()
-                self.delegate.didFail(message: LocalizationManager.shared.localizeStringWith(key: error))
+                self.delegate?.didFailWith(message: NSLocalizedString(error, comment: ""))
             }
-            
-        }) { (error: String) in
-            
-            // please open your GPS/Internet to be able to load your location and your data
-            view.stopAnimating()
-            self.delegate.didFail(message: LocalizationManager.shared.localizeStringWith(key: error))
         }
+
     }
     
 }

@@ -11,12 +11,12 @@ import Foundation
 struct TodayWeatherForLocationResponse: Codable {
     
 
-    let coordinates:        LocationCoordinatesDataModel
+    let coordinates:        LocationCoordinatesDataModel?
     let weather:            [WeatherStateDataModel]
     let base:               String
     let tempretureDetails:  TempretureDetailsDataModel
     let visibility:         Int?
-    let wind:               WindDetailsDataModel
+    let wind:               WindDetailsDataModel?
     let clouds:             CloudsDetailsDataModel
     let dateTimeStamp:      Int
     let sunDetails:         SunDetailsDataModel
@@ -25,7 +25,11 @@ struct TodayWeatherForLocationResponse: Codable {
     let code:               Int
     
     var dateDay:        String {
-        return Date.timeStampToDayOfTheWeek(timeInterval: Double(dateTimeStamp)) ?? ""
+        return Date.toWeekDay(timeInterval: Double(dateTimeStamp)) ?? ""
+    }
+    
+    var isDay:    Bool {
+        return Date.isDay(timeInterval: Double(dateTimeStamp))
     }
     
     

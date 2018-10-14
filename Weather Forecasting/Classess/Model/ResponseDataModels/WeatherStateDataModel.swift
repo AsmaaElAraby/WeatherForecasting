@@ -10,6 +10,6 @@ import Foundation
 
 struct WeatherStateDataModel: Codable {
 
-    let id:                         Int
-    let main, description, icon:    String
+    let id: Int
+    let main, description, icon: String
 }

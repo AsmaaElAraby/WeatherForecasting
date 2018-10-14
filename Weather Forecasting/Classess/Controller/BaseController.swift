@@ -7,41 +7,16 @@
 //
 
 import UIKit
-import SwiftMessages
-
-protocol BaseResponseDelegate {
-    func didLoadData<T: Codable>(data: T)
-    func didFail(message: String)
-}
-
 
 class BaseController {
     
-    var viewController : UIViewController!
+    weak var delegate: RequestDelegate?
     
-    
-    /// display a success message view
+    /// set the controller delegate
     ///
-    /// - Parameter message: String
-    internal func showSuccessMessageAlert(message : String) {
-        
-        DispatchQueue.main.async {
-            
-            let indicator = AndicatingView()
-            indicator.displayMessage(message: LocalizationManager().localizeStringWith(key: message), title: "Success", messageError: false)
-        }
+    /// - Parameter delegate:   TodayWeatherDelegate
+    internal func setDelegate(delegate: RequestDelegate) {
+        self.delegate = delegate
     }
     
-    
-    /// display an error message view
-    ///
-    /// - Parameter message: String
-    internal func showErrorMessageAlert(message : String) {
-        
-        DispatchQueue.main.async {
-            
-            let indicator = AndicatingView()
-            indicator.displayMessage(message: LocalizationManager().localizeStringWith(key: message), title: "Error", messageError: true)
-        }
-    }
 }
