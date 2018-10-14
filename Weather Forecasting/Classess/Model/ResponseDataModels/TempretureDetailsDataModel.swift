@@ -10,11 +10,11 @@ import Foundation
 
 struct TempretureDetailsDataModel: Codable {
     
-    let temperature: Double
-    let pressure: Double
-    let humidity: Double
-    let temperatureMinimum: Double
-    let temperatureMaximum: Double
+    let temperature:    Double
+    let pressure:       Double
+    let humidity:       Double
+    let temperatureMinimum:    Double
+    let temperatureMaximum:    Double
     
     
     enum CodingKeys: String, CodingKey {
@@ -26,3 +26,4 @@ struct TempretureDetailsDataModel: Codable {
     }
     
 }
+

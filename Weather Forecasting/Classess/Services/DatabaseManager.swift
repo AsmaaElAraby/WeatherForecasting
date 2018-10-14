@@ -16,7 +16,7 @@ enum DatabaseTableName: String {
 
 class DatabaseManager {
     
-    private let basePath        = "WeatherForecasting"
+    private let DatabasePath    = "WeatherForecasting"
     static  var shared          = DatabaseManager()
     private var database        = Database.database()
     private var databaseReference: DatabaseReference?
@@ -25,7 +25,7 @@ class DatabaseManager {
         
         if databaseReference == nil {
             database.isPersistenceEnabled = true
-            databaseReference = database.reference(withPath: basePath)
+            databaseReference = database.reference(withPath: DatabasePath)
         }
     }
     
@@ -36,11 +36,11 @@ class DatabaseManager {
     }
     
     internal func update<T: Codable>(data: T, to table: DatabaseTableName) {
-    
+        
         self.databaseReference?.child(table.rawValue).setValue(data.dictionary)
     }
     
-    internal func readDatafrom(table: DatabaseTableName, with childName: String, onSuccess: @escaping (_ response: String) -> Void, onFaliure: @escaping (_ error: String) -> Void) {
+    internal func read<T: Codable>(dataType: T.Type, childName: String, from table: DatabaseTableName, onSuccess : @escaping (_ response : String) -> Void, onFaliure : @escaping (_ error : String) -> Void) {
     
             self.initFirebase()
         
@@ -60,5 +60,4 @@ class DatabaseManager {
                 }
             })
         }
-    
 }

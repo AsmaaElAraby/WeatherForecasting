@@ -27,28 +27,12 @@ class TodayViewController: BaseViewController {
     fileprivate var todayWeatherData: TodayWeatherForLocationResponse!
     private var doneLoadingData = false
     
-    lazy var andicatingView: AndicatingView = {
-        
-        return AndicatingView()
-    }()
-
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         if doneLoadingData == false {
             doneLoadingData = true
-            loadWeatherForecastDataForToday()
-        }
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        if #available(iOS 11.0, *) {
-            mainScrollView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentBehavior.never
-        } else {
-            // Fallback on earlier versions
+            self.loadWeatherForecastDataForToday()
         }
     }
     
@@ -60,6 +44,7 @@ class TodayViewController: BaseViewController {
         }
     }
     
+    
     @IBAction func shareButtonPressed() {
         
         var weatherStateSummary = ""
@@ -68,81 +53,75 @@ class TodayViewController: BaseViewController {
             weatherStateSummary = weatherState.description
         }
         
-        let objectsToShare = ["\(NSLocalizedString("theCurrentWeather", comment: ""))\(weatherStateSummary)\(NSLocalizedString(", With degree ", comment: ""))\(TemperatureHandler.kelvinToCelsius(degree: todayWeatherData.tempretureDetails.temperature))"]
+        let objectsToShare = ["The current weather: \(weatherStateSummary), With degree \(MesurementsConversionManager.kelvinToCelsius(kelvinTemp: self.todayWeatherData.tempretureDetails.temperature))"]
         let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
         
-        present(activityVC, animated: true, completion: nil)
+        self.present(activityVC, animated: true, completion: nil)
     }
     
     /// Load the screen data
     private func loadWeatherForecastDataForToday() {
         
-        let controller = TodayWeatherController()
+        let controller = TodayWeatherController(viewController: self)
         controller.setDelegate(delegate: self)
-        controller.loadTodayWeatherForCurrentLocation()
+        controller.loadTodayDataForCurrentLocation()
     }
+    
     
     /// update the screen ui text with the received data from the server
     fileprivate func updateScreenData() {
         
-        currentLocationLabel.text = "\(todayWeatherData.name.count > 0 ? todayWeatherData.name : currentCityName ?? ""), \(CountryHandler.countryNameFor(code: todayWeatherData.sunDetails.country ?? ""))"
+        self.currentLocationLabel.text = "\(todayWeatherData.name.count > 0 ? todayWeatherData.name : currentCityName ?? ""), \(CountryCodeMapper.countryNameBy(code: todayWeatherData.sunDetails.country ?? ""))"
         
         if let weatherState = todayWeatherData.weather.first {
             
-            weatherStateImageView.image = UIImage(named: WeatherHandler.imageNameFor(screenName: .today, weatherStateId: weatherState.id, isDay: todayWeatherData.isDay))
+            self.weatherStateImageView.image = UIImage(named: WeatherStateMapper.getWeatherStateImageTitle(state: weatherState.main))
             
-            weatherSummaryLabel.text = "\(TemperatureHandler.kelvinToCelsius(degree: todayWeatherData.tempretureDetails.temperature))°C | \(weatherState.main)"
+            self.weatherSummaryLabel.text = "\(MesurementsConversionManager.kelvinToCelsius(kelvinTemp: self.todayWeatherData.tempretureDetails.temperature))°C | \(weatherState.main)"
         }
         
-        posibilityOfRainLabel.text = "\(todayWeatherData.clouds.all)%"
-        humidityLabel.text = "\(self.todayWeatherData.tempretureDetails.humidity) mm"
-        windSpeedLabel.text = "\(todayWeatherData.wind?.speed ?? 0.0) km/h"
-        pressureLabel.text = "\(todayWeatherData.tempretureDetails.pressure) hPa"
-        if let degree = todayWeatherData.wind?.degree {
-            countryCodeLabel.text = WeatherHandler.windDirectionFor(degree: degree)
-        } else {
-            countryCodeLabel.text = "__"
-        }
+        self.posibilityOfRainLabel.text = "\(self.todayWeatherData.clouds.all)%"
+        self.humidityLabel.text = "\(self.todayWeatherData.tempretureDetails.humidity) mm"
+        self.windSpeedLabel.text = "\(self.todayWeatherData.wind.speed) km/h"
+        self.pressureLabel.text = "\(self.todayWeatherData.tempretureDetails.pressure) hPa"
+        self.countryCodeLabel.text = MesurementsConversionManager.windDirectionFromDegrees(degree: self.todayWeatherData.wind.degree)
     }
     
 }
+
 
 extension TodayViewController: TodayWeatherDelegate {
     
     /// MARK: TodayWeatherDelegate Handling
     
-    func willLoad() {
+    func didLoadData<T>(data: T) where T : Decodable, T : Encodable {
         
-        andicatingView.startAnimating(view: view)
-    }
-    
-    func didLoad<T>(data: T) where T: Decodable, T: Encodable {
-        
-        andicatingView.stopAnimating()
         guard let data = data as? TodayWeatherForLocationResponse else {
             
-            noDataFoundLabel?.isHidden = false
+            self.noDataFoundLabel?.isHidden = false
+            self.mainScrollView.isHidden = true
             return
         }
         
-        noDataFoundLabel?.isHidden = true
+        self.mainScrollView.isHidden = false
+        self.noDataFoundLabel?.isHidden = true
         
-        todayWeatherData = data
+        self.todayWeatherData = data
         currentCityName = data.name
         
-        DispatchQueue.main.async { [weak self] in
+        DispatchQueue.main.async {
             
-            self?.updateScreenData()
+            self.updateScreenData()
         }
     }
     
-    func didFailWith(message: String) {
+    func didFail(message: String) {
         
-        andicatingView.stopAnimating()
         if message.count > 0 {
-            noDataFoundLabel?.text = message
+            self.noDataFoundLabel?.text = message
         }
-        noDataFoundLabel?.isHidden = false
+        self.noDataFoundLabel?.isHidden = false
+        self.mainScrollView.isHidden = true
     }
     
 }

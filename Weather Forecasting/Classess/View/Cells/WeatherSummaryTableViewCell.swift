@@ -8,6 +8,16 @@
 
 import UIKit
 
+enum WeatherStateImageTitles: String {
+    
+    case Sunny  = "clear"
+    case Windy  = "wind"
+    case Rain   = "rain"
+    case Snow   = "snow"
+    case Lightning  = "light"
+    case Cloudy     = "clouds"
+}
+
 class WeatherSummaryTableViewCell: UITableViewCell {
     
     @IBOutlet weak var weatherDegreeLabel: UILabel!
@@ -19,21 +29,22 @@ class WeatherSummaryTableViewCell: UITableViewCell {
     private var cellData: WeatherForADayDataModel!
     
     
+    
     /// set the cell data
     ///
     /// - Parameter cellData: WeatherForADayDataModel
     internal func setCellData(cellData: WeatherForADayDataModel) {
         self.cellData = cellData
         
-        DispatchQueue.main.async { [weak self] in
+        DispatchQueue.main.async {
             
-            self?.weatherDegreeLabel.text = "\(TemperatureHandler.kelvinToCelsius(degree: self?.cellData.main.temperature ?? 0))°"
-            self?.dayLabel.text = self?.cellData.hour
+            self.weatherDegreeLabel.text = "\(MesurementsConversionManager.kelvinToCelsius(kelvinTemp: self.cellData.main.temp))°"
+            self.dayLabel.text = self.cellData.hour
             
-            if let weatherState = self?.cellData.weather.first {
+            if let weatherState = self.cellData.weather.first {
                 
-                self?.weatherStateLabel.text = weatherState.main
-                self?.weatherStateImageView.image = UIImage(named: WeatherHandler.imageNameFor(screenName: .forcast, weatherStateId: weatherState.id, isDay: self?.cellData.isDay ?? false))
+                self.weatherStateLabel.text = weatherState.main
+                self.weatherStateImageView.image = UIImage(named: WeatherStateMapper.getWeatherStateImageTitle(state: weatherState.main))
                 
             }
         }

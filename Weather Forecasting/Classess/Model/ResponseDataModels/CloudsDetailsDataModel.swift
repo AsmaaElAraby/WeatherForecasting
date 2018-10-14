@@ -13,3 +13,4 @@ struct CloudsDetailsDataModel: Codable {
     let all:  Int
     
 }
+

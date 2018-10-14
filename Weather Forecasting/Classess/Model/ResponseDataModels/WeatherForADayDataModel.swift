@@ -14,7 +14,7 @@ struct WeatherForADayDataModel: Codable {
     let main:           TemperatureDataModel
     let weather:        [WeatherStateDataModel]
     let clouds:         CloudsDetailsDataModel
-    let wind:           WindDetailsDataModel?
+    let wind:           WindDetailsDataModel
     let rain:           RainDetails?
     let sysDetails:     SysDetails
     let dateAsText:     String
@@ -31,18 +31,13 @@ struct WeatherForADayDataModel: Codable {
         case    dateAsText      =   "dt_txt"
     }
     
-    var dateDay: String {
-        return Date.toWeekDay(timeInterval: Double(dateTimeStamp)) ?? ""
+    var dateDay:    String {
+        return Date.timeStampToDayOfTheWeek(timeInterval: Double(dateTimeStamp)) ?? ""
     }
     
-    var hour: String {
-        return Date.toHourMinutes(timeInterval: Double(dateTimeStamp)) ?? ""
+    var hour:    String {
+        return Date.timeStampToDayHour(timeInterval: Double(dateTimeStamp)) ?? ""
     }
-    
-    var isDay: Bool {
-        return Date.isDay(timeInterval: Double(dateTimeStamp))
-    }
-    
 }
 
 struct RainDetails: Codable {
@@ -51,7 +46,6 @@ struct RainDetails: Codable {
     enum CodingKeys: String, CodingKey {
         case    volumeForLast3h   =   "3h"
     }
-    
 }
 
 struct SysDetails: Codable {

@@ -11,7 +11,8 @@ class WeatherSummaryHeaderTableViewCell: UITableViewCell {
 
     @IBOutlet weak var titleLabel: UILabel!
     
-
+    
+    
     /// set the cell data
     ///
     /// - Parameter cellData: String

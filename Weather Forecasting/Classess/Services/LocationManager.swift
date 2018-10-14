@@ -5,179 +5,67 @@
 //  Copyright © 2017 STRV. All rights reserved.
 //
 
-import UIKit
 import Foundation
 import CoreLocation
+import SwiftLocation
 
-enum LocationURLs: String {
+class LocationManager {
     
-    case base = "http://ip-api.com/json"
+    static let shared = LocationManager()
     
-    var path: String {
-        return self.rawValue
-    }
     
-}
-
-typealias Location = (latitude: Double, longitude: Double)
-
-class LocationManager: NSObject {
-    
-    static var shared: LocationManager {
-        struct Static {
-            static let instance : LocationManager = LocationManager()
-        }
-        return Static.instance
-    }
-    
-    lazy var locationManager: CLLocationManager = {
-
-        var locationManager = CLLocationManager()
-        locationManager.delegate = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+    /// load the user current location using GPS/Internet
+    ///
+    /// - Parameters:
+    ///   - onSuccess:  Block
+    ///   - onFaliure:  Block
+    internal func currentLocation(onSuccess : @escaping (_ latitude: Double, _ longitude: Double) -> Void, onFaliure : @escaping (_ error : String) -> Void) {
         
-        return locationManager
-    }()
-    
-    var location: ((_ location: (latitude: Double, longitude: Double)?, _ error: String?) -> Void)?
-    
-    func startLocationUpdates() {
-        
-        checkLocationPermission()
-    }
-    
-    private func checkLocationPermission() {
-        
-        if CLLocationManager.locationServicesEnabled() {
-        
-            switch CLLocationManager.authorizationStatus() {
-            case .notDetermined:
-                // If status has not yet been determied, ask for authorization
-                locationManager.requestWhenInUseAuthorization()
-
-            case .authorizedWhenInUse:
-                // If authorized when in use
-                locationManager.requestLocation()
-
-            case .authorizedAlways:
-                // If always authorized
-                locationManager.requestLocation()
-
-            case .restricted:
-                // If restricted by e.g. parental controls. User can't enable Location Services
-                return
-            case .denied:
-                // If user denied your app access to Location Services, but can grant access from Settings.app
-                openSettings()
-            }
+        currentLocationWith(accuracy: Accuracy.city, onSuccess: { (_ latitude: Double, _ longitude: Double) in
             
-        } else {
+            onSuccess(latitude, longitude)
+        }) { (error: String) in
             
-            openSettings()
+            onFaliure(error)
         }
     }
     
-    private func openSettings() {
-        UIAlertController().settingsAlertWith(title: NSLocalizedString("locationState", comment: ""), message: NSLocalizedString("requestEnableLocation", comment: "")) { [weak self] (_) in
-            self?.location?(nil, "requestEnableLocation")
+    
+    
+    /// call an API that gets the user current location using GSP and in case it fails try to load it throw the internet
+    ///
+    /// - Parameters:
+    ///   - accuracy:   Accuracy
+    ///   - onSuccess:  Block
+    ///   - onFaliure:  Block
+    private func currentLocationWith(accuracy: Accuracy, onSuccess : @escaping (_ latitude: Double, _ longitude: Double) -> Void, onFaliure : @escaping (_ error : String) -> Void) {
+        
+        // get the user current location with the accuracy of city static on this level of the app
+        Locator.currentPosition(accuracy: .city, onSuccess: { (location) -> (Void) in
+            
+            // if the received location is empty call the same method but loading it over the internet not from the GPS (it's a hack to load the user location)
+            (location.coordinate.latitude != 0 && location.coordinate.longitude != 0) ? onSuccess(location.coordinate.latitude, location.coordinate.longitude) : self.currentLocationWithIpAddress(onSuccess: onSuccess, onFaliure: onFaliure)
+            
+        }) { (err, last) -> (Void) in
+            
+            // if couldn't get the user current location try to load it without GPS
+            self.currentLocationWithIpAddress(onSuccess: onSuccess, onFaliure: onFaliure)
         }
     }
     
-}
-
-extension LocationManager {
+    
     
     /// loading user location throw ip address via free service
     ///
-    /// - Parameter completion: (currentLocation, errorMessage)
-    fileprivate func getIpLocation(completion: @escaping(Location?, String?) -> Void) {
+    /// - Parameters:
+    ///   - onSuccess: Block
+    ///   - onFaliure: Block
+    private func currentLocationWithIpAddress(onSuccess : @escaping (_ latitude: Double, _ longitude: Double) -> Void, onFaliure : @escaping (_ error : String) -> Void) {
         
-        APIManager.shared.fetchDataFor(request: RequestProvider.get(url: LocationURLs.base.rawValue, params: nil), onSuccess: { (reuslt) in
-            
-            guard let finalResponse = LocationCoordinatesDataModel.decode(json: reuslt!, asA: LocationCoordinatesDataModel.self),
-            finalResponse.latitude != nil, finalResponse.longitude != nil,
-            finalResponse.latitude! > 0.0 && finalResponse.longitude! > 0.0 else {
-                
-                completion(nil, "locationLoadingError")
-                return
-            }
-            
-            completion(Location(finalResponse.latitude!, finalResponse.longitude!), nil)
-            
-        }) { (error) in
-            
-            completion(nil, ErrorManager.getErrorMessage(error: error))
-        }
-    }
-}
-
-extension LocationManager: CLLocationManagerDelegate {
-    
-    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        
-        switch status {
-        case .notDetermined:
-            // If status has not yet been determied, ask for authorization
-            manager.requestWhenInUseAuthorization()
-
-        case .authorizedWhenInUse:
-            // If authorized when in use
-            manager.requestLocation()
-
-        case .authorizedAlways:
-            // If always authorized
-            manager.requestLocation()
-
-        case .restricted:
-            // If restricted by e.g. parental controls. User can't enable Location Services
-            break
-        case .denied:
-            // If user denied your app access to Location Services, but can grant access from Settings.app
-            break
-        }
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        
-        var latitude = 0.0
-        var longitude = 0.0
-        guard let lastLocation: CLLocation = locations.last else {
-            return
-        }
-        latitude = lastLocation.coordinate.latitude
-        longitude = lastLocation.coordinate.longitude
-        
-        debugPrint("user latitude = \(lastLocation.coordinate.latitude)")
-        debugPrint("user longitude = \(lastLocation.coordinate.longitude)")
-
-        locationManager.stopUpdatingLocation()
-        
-        guard latitude != currentLocation?.latitude && longitude != currentLocation?.longitude else {
-            return
-        }
-        
-        currentLocation = (latitude, longitude)
-        location?(Location(latitude, longitude), nil)
-        
-        return
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        
-        debugPrint("Error \(error)")
-        locationManager.stopUpdatingLocation()
-        
-        getIpLocation { [unowned self] (locationDic, error) in
-
-            guard let locationDic = locationDic else {
-                self.location?(nil, error)
-                return
-            }
-            
-            currentLocation = (locationDic.latitude, locationDic.longitude)
-            self.location?(locationDic, error)
-            
-            return
+        Locator.currentPosition(usingIP: .freeGeoIP, onSuccess: { location in
+            (location.coordinate.latitude != 0 && location.coordinate.longitude != 0) ? onSuccess(location.coordinate.latitude, location.coordinate.longitude) : onFaliure("locationLoadingError")
+        }) { error, _ in
+            onFaliure(error.localizedDescription)
         }
     }
     
